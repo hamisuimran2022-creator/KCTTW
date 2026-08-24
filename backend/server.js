@@ -7,71 +7,49 @@ const authRoutes = require("./routes/auth");
 
 const app = express();
 
-const PORT = 5000;
-
-/*
-========================================================
-MIDDLEWARE
-========================================================
-*/
-
 app.use(cors());
-
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(express.urlencoded({
-    extended: true
-}));
-
-
-/*
-========================================================
-TEST ROUTE
-========================================================
-*/
-
+// Test route
 app.get("/", (req, res) => {
-    res.json({
+    res.status(200).json({
         success: true,
         message: "KCTTW backend is running."
     });
 });
 
+let isConnected = false;
 
-/*
-========================================================
-AUTH ROUTES
-========================================================
-*/
+async function connectDB() {
+    if (isConnected) {
+        return;
+    }
 
-app.use("/api/auth", authRoutes);
+    if (!process.env.MONGO_URI) {
+        throw new Error("MONGO_URI environment variable is missing.");
+    }
 
+    await mongoose.connect(process.env.MONGO_URI);
 
-/*
-========================================================
-MONGODB
-========================================================
-*/
+    isConnected = true;
 
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => {
+    console.log("MongoDB connected successfully.");
+}
 
-        console.log("MongoDB connected successfully.");
+// Authentication routes
+app.use("/api/auth", async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (error) {
+        console.error("MongoDB connection error:", error);
 
-        app.listen(PORT, () => {
-
-            console.log(
-                `KCTTW server running on http://localhost:${PORT}`
-            );
-
+        return res.status(500).json({
+            success: false,
+            message: "Database connection failed."
         });
+    }
+}, authRoutes);
 
-    })
-    .catch((error) => {
-
-        console.error(
-            "MongoDB connection failed:",
-            error
-        );
-
-    });
+module.exports = app;
