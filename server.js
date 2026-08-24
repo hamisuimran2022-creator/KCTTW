@@ -7,8 +7,6 @@ const authRoutes = require("./routes/auth");
 
 const app = express();
 
-const PORT = 5000;
-
 /*
 ========================================================
 MIDDLEWARE
@@ -23,7 +21,6 @@ app.use(express.urlencoded({
     extended: true
 }));
 
-
 /*
 ========================================================
 TEST ROUTE
@@ -37,7 +34,6 @@ app.get("/", (req, res) => {
     });
 });
 
-
 /*
 ========================================================
 AUTH ROUTES
@@ -46,32 +42,27 @@ AUTH ROUTES
 
 app.use("/api/auth", authRoutes);
 
-
 /*
 ========================================================
-MONGODB
+MONGODB CONNECTION
 ========================================================
 */
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
-
         console.log("MongoDB connected successfully.");
-
-        app.listen(PORT, () => {
-
-            console.log(
-                `KCTTW server running on http://localhost:${PORT}`
-            );
-
-        });
-
     })
     .catch((error) => {
-
         console.error(
             "MongoDB connection failed:",
             error
         );
-
     });
+
+/*
+========================================================
+VERCEL
+========================================================
+*/
+
+module.exports = app;
