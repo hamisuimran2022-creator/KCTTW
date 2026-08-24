@@ -1,7 +1,7 @@
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+
 require("dotenv").config();
 
 const authRoutes = require("./routes/auth");
@@ -10,7 +10,7 @@ const app = express();
 
 /*
 ========================================================
-MIDDLEWARE
+BASIC CONFIGURATION
 ========================================================
 */
 
@@ -23,12 +23,7 @@ app.use(
 );
 
 app.use(express.json());
-
-app.use(
-    express.urlencoded({
-        extended: true
-    })
-);
+app.use(express.urlencoded({ extended: true }));
 
 
 /*
@@ -37,29 +32,27 @@ MONGODB CONNECTION
 ========================================================
 */
 
-let mongoConnection = null;
+let mongoPromise = null;
 
-async function connectMongoDB() {
+async function connectDB() {
 
-    // Already connected
     if (mongoose.connection.readyState === 1) {
-        return;
+        return mongoose.connection;
     }
 
-    // Check MONGO_URI
     if (!process.env.MONGO_URI) {
         throw new Error(
             "MONGO_URI environment variable is missing."
         );
     }
 
-    // Create connection only once
-    if (!mongoConnection) {
+    if (!mongoPromise) {
 
-        mongoConnection = mongoose.connect(
+        mongoPromise = mongoose.connect(
             process.env.MONGO_URI,
             {
-                serverSelectionTimeoutMS: 10000
+                serverSelectionTimeoutMS: 10000,
+                connectTimeoutMS: 10000
             }
         );
 
@@ -67,61 +60,42 @@ async function connectMongoDB() {
 
     try {
 
-        await mongoConnection;
+        await mongoPromise;
 
         console.log(
-            "MongoDB connected successfully."
+            "MongoDB connected:",
+            mongoose.connection.name
         );
+
+        return mongoose.connection;
 
     } catch (error) {
 
-        // Allow another connection attempt
-        mongoConnection = null;
+        mongoPromise = null;
 
         console.error(
-            "MongoDB connection failed:"
+            "MONGODB CONNECTION ERROR:"
         );
 
         console.error(
-            "NAME:",
+            "Name:",
             error.name
         );
 
         console.error(
-            "MESSAGE:",
+            "Message:",
             error.message
         );
 
         throw error;
+
     }
 }
 
 
 /*
 ========================================================
-BASIC SERVER TEST
-========================================================
-*/
-
-app.get("/", (req, res) => {
-
-    return res.status(200).json({
-        success: true,
-        message: "KCTTW backend is running."
-    });
-
-});
-
-
-/*
-========================================================
-MONGODB TEST ROUTE
-========================================================
-
-Open:
-
-https://backend-koguna1.vercel.app/api/test-db
-
+DATABASE TEST ROUTE
 ========================================================
 */
 
@@ -129,7 +103,7 @@ app.get("/api/test-db", async (req, res) => {
 
     try {
 
-        await connectMongoDB();
+        await connectDB();
 
         return res.status(200).json({
 
@@ -139,35 +113,15 @@ app.get("/api/test-db", async (req, res) => {
                 "MongoDB connection is working.",
 
             database:
-                mongoose.connection.name,
-
-            readyState:
-                mongoose.connection.readyState
+                mongoose.connection.name
 
         });
 
     } catch (error) {
 
         console.error(
-            "================================="
-        );
-
-        console.error(
-            "MONGODB TEST ERROR"
-        );
-
-        console.error(
-            "NAME:",
-            error.name
-        );
-
-        console.error(
-            "MESSAGE:",
-            error.message
-        );
-
-        console.error(
-            "================================="
+            "MONGODB TEST ERROR:",
+            error
         );
 
         return res.status(500).json({
@@ -192,55 +146,20 @@ app.get("/api/test-db", async (req, res) => {
 
 /*
 ========================================================
-DATABASE MIDDLEWARE
-========================================================
-
-Every API request below this point will first
-connect to MongoDB.
-
+ROOT ROUTE
 ========================================================
 */
 
-app.use(async (req, res, next) => {
+app.get("/", async (req, res) => {
 
-    try {
+    res.status(200).json({
 
-        await connectMongoDB();
+        success: true,
 
-        next();
+        message:
+            "KCTTW backend is running."
 
-    } catch (error) {
-
-        console.error(
-            "DATABASE ERROR:"
-        );
-
-        console.error(
-            "NAME:",
-            error.name
-        );
-
-        console.error(
-            "MESSAGE:",
-            error.message
-        );
-
-        return res.status(500).json({
-
-            success: false,
-
-            message:
-                "Database connection failed.",
-
-            error:
-                error.message,
-
-            name:
-                error.name
-
-        });
-
-    }
+    });
 
 });
 
@@ -249,18 +168,43 @@ app.use(async (req, res, next) => {
 ========================================================
 AUTH ROUTES
 ========================================================
-
-REGISTER:
-POST /api/auth/register
-
-LOGIN:
-POST /api/auth/login
-
-========================================================
 */
 
 app.use(
     "/api/auth",
+    async (req, res, next) => {
+
+        try {
+
+            await connectDB();
+
+            next();
+
+        } catch (error) {
+
+            console.error(
+                "AUTH DATABASE ERROR:",
+                error
+            );
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Database connection failed.",
+
+                error:
+                    error.message,
+
+                name:
+                    error.name
+
+            });
+
+        }
+
+    },
     authRoutes
 );
 
@@ -295,10 +239,7 @@ app.use(
     (error, req, res, next) => {
 
         console.error(
-            "SERVER ERROR:"
-        );
-
-        console.error(
+            "SERVER ERROR:",
             error
         );
 
@@ -322,11 +263,6 @@ app.use(
 ========================================================
 VERCEL EXPORT
 ========================================================
-
-DO NOT USE app.listen() HERE.
-
-========================================================
 */
 
 module.exports = app;
-```
