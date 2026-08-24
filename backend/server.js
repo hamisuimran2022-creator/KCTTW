@@ -1,8 +1,6 @@
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config();
 
 const authRoutes = require("./routes/auth");
 
@@ -23,13 +21,7 @@ app.use(
 );
 
 app.use(express.json());
-
-app.use(
-    express.urlencoded({
-        extended: true
-    })
-);
-
+app.use(express.urlencoded({ extended: true }));
 
 /*
 ========================================================
@@ -37,47 +29,57 @@ MONGODB CONNECTION
 ========================================================
 */
 
-let mongoConnection = null;
+let isConnecting = false;
 
 async function connectMongoDB() {
 
+    // Already connected
     if (mongoose.connection.readyState === 1) {
         return;
     }
 
-    if (!process.env.MONGO_URI) {
-        throw new Error(
-            "MONGO_URI environment variable is missing."
-        );
+    // Connection is already being established
+    if (isConnecting) {
+        while (isConnecting) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+
+        if (mongoose.connection.readyState === 1) {
+            return;
+        }
     }
 
-    if (!mongoConnection) {
+    const mongoURI = process.env.MONGO_URI;
 
-        mongoConnection = mongoose.connect(
-            process.env.MONGO_URI
-        );
-
+    if (!mongoURI) {
+        throw new Error("MONGO_URI is not configured in Vercel.");
     }
+
+    isConnecting = true;
 
     try {
 
-        await mongoConnection;
+        await mongoose.connect(mongoURI, {
+            serverSelectionTimeoutMS: 10000
+        });
 
         console.log("MongoDB connected successfully.");
 
     } catch (error) {
 
-        mongoConnection = null;
-
         console.error(
-            "MongoDB connection failed:",
-            error
+            "MongoDB connection error:",
+            error.message
         );
 
         throw error;
+
+    } finally {
+
+        isConnecting = false;
+
     }
 }
-
 
 /*
 ========================================================
@@ -96,19 +98,22 @@ app.use(async (req, res, next) => {
     } catch (error) {
 
         console.error(
-            "DATABASE ERROR:",
+            "DATABASE CONNECTION ERROR:",
             error
         );
 
         return res.status(500).json({
             success: false,
-            message: "Database connection failed."
+            message: "Database connection failed.",
+            error:
+                process.env.NODE_ENV === "production"
+                    ? undefined
+                    : error.message
         });
 
     }
 
 });
-
 
 /*
 ========================================================
@@ -125,22 +130,17 @@ app.get("/", (req, res) => {
 
 });
 
-
 /*
 ========================================================
 AUTH ROUTES
 ========================================================
 */
 
-app.use(
-    "/api/auth",
-    authRoutes
-);
-
+app.use("/api/auth", authRoutes);
 
 /*
 ========================================================
-404 ROUTE
+404
 ========================================================
 */
 
@@ -152,7 +152,6 @@ app.use((req, res) => {
     });
 
 });
-
 
 /*
 ========================================================
@@ -174,13 +173,10 @@ app.use((error, req, res, next) => {
 
 });
 
-
 /*
 ========================================================
-IMPORTANT
-DO NOT USE app.listen() ON VERCEL
+VERCEL EXPORT
 ========================================================
 */
 
 module.exports = app;
-```
