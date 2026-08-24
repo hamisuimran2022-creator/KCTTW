@@ -6,6 +6,20 @@ const User = require("../models/User");
 const router = express.Router();
 
 /* =====================================================
+   TEST AUTH ROUTE
+   GET /api/auth/test
+===================================================== */
+
+router.get("/test", (req, res) => {
+
+    res.status(200).json({
+        success: true,
+        message: "Auth router is working."
+    });
+
+});
+
+/* =====================================================
    REGISTER
    POST /api/auth/register
 ===================================================== */
@@ -16,46 +30,23 @@ router.post("/register", async (req, res) => {
 
         console.log("REGISTER REQUEST RECEIVED");
 
-        console.log("Request body:", {
-            fullName: req.body.fullName,
-            email: req.body.email,
-            phone: req.body.phone,
-            passwordProvided: !!req.body.password
-        });
+        console.log("Request body:", req.body);
 
         const {
             fullName,
             email,
             phone,
             password
-        } = req.body;
+        } = req.body || {};
 
-        /* ================================
-           VALIDATION
-        ================================= */
-
-        if (
-            typeof fullName !== "string" ||
-            typeof email !== "string" ||
-            typeof phone !== "string" ||
-            typeof password !== "string"
-        ) {
-
-            return res.status(400).json({
-                success: false,
-                message: "Please provide valid registration details."
-            });
-
-        }
-
-        const cleanFullName = fullName.trim();
-        const cleanEmail = email.trim().toLowerCase();
-        const cleanPhone = phone.trim();
+        /* =========================
+           REQUIRED FIELDS
+        ========================= */
 
         if (
-            !cleanFullName ||
-            !cleanEmail ||
-            !cleanPhone ||
+            !fullName ||
+            !email ||
+            !phone ||
             !password
         ) {
 
@@ -66,14 +57,39 @@ router.post("/register", async (req, res) => {
 
         }
 
-        /* ================================
-           EMAIL VALIDATION
-        ================================= */
+        /* =========================
+           CLEAN DATA
+        ========================= */
 
-        const emailRegex =
-            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const cleanFullName =
+            String(fullName).trim();
 
-        if (!emailRegex.test(cleanEmail)) {
+        const cleanEmail =
+            String(email).trim().toLowerCase();
+
+        const cleanPhone =
+            String(phone).trim();
+
+        const cleanPassword =
+            String(password);
+
+        /* =========================
+           VALIDATION
+        ========================= */
+
+        if (cleanFullName.length < 2) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Please enter your full name."
+            });
+
+        }
+
+        if (
+            !cleanEmail.includes("@") ||
+            !cleanEmail.includes(".")
+        ) {
 
             return res.status(400).json({
                 success: false,
@@ -82,11 +98,7 @@ router.post("/register", async (req, res) => {
 
         }
 
-        /* ================================
-           PASSWORD VALIDATION
-        ================================= */
-
-        if (password.length < 6) {
+        if (cleanPassword.length < 6) {
 
             return res.status(400).json({
                 success: false,
@@ -95,9 +107,9 @@ router.post("/register", async (req, res) => {
 
         }
 
-        /* ================================
-           CHECK EMAIL
-        ================================= */
+        /* =========================
+           CHECK EXISTING USER
+        ========================= */
 
         const existingUser =
             await User.findOne({
@@ -108,21 +120,25 @@ router.post("/register", async (req, res) => {
 
             return res.status(409).json({
                 success: false,
-                message: "An account with this email already exists."
+                message:
+                    "An account with this email already exists."
             });
 
         }
 
-        /* ================================
+        /* =========================
            HASH PASSWORD
-        ================================= */
+        ========================= */
 
         const hashedPassword =
-            await bcrypt.hash(password, 10);
+            await bcrypt.hash(
+                cleanPassword,
+                10
+            );
 
-        /* ================================
+        /* =========================
            CREATE USER
-        ================================= */
+        ========================= */
 
         const user =
             await User.create({
@@ -148,31 +164,38 @@ router.post("/register", async (req, res) => {
             user._id.toString()
         );
 
-        /* ================================
-           RESPONSE
-        ================================= */
+        /* =========================
+           SUCCESS
+        ========================= */
 
         return res.status(201).json({
 
             success: true,
 
-            message: "Account created successfully.",
+            message:
+                "Account created successfully.",
 
             user: {
 
                 id: user._id,
 
-                fullName: user.fullName,
+                fullName:
+                    user.fullName,
 
-                email: user.email,
+                email:
+                    user.email,
 
-                phone: user.phone,
+                phone:
+                    user.phone,
 
-                balance: user.balance,
+                balance:
+                    user.balance,
 
-                totalInvested: user.totalInvested,
+                totalInvested:
+                    user.totalInvested,
 
-                totalProfit: user.totalProfit
+                totalProfit:
+                    user.totalProfit
 
             }
 
@@ -185,28 +208,50 @@ router.post("/register", async (req, res) => {
             error
         );
 
-        /* ================================
+        /* =========================
            DUPLICATE EMAIL
-        ================================= */
+        ========================= */
 
         if (error.code === 11000) {
 
             return res.status(409).json({
+
                 success: false,
-                message: "An account with this email already exists."
+
+                message:
+                    "An account with this email already exists."
+
             });
 
         }
+
+        /* =========================
+           MONGOOSE VALIDATION ERROR
+        ========================= */
+
+        if (error.name === "ValidationError") {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Please check the information you entered."
+
+            });
+
+        }
+
+        /* =========================
+           SERVER ERROR
+        ========================= */
 
         return res.status(500).json({
 
             success: false,
 
             message:
-                "Server error while creating account.",
-
-            error:
-                error.message
+                "Server error while creating account."
 
         });
 
@@ -226,22 +271,37 @@ router.post("/login", async (req, res) => {
         const {
             email,
             password
-        } = req.body;
+        } = req.body || {};
 
-        if (
-            typeof email !== "string" ||
-            typeof password !== "string"
-        ) {
+        /* =========================
+           REQUIRED
+        ========================= */
+
+        if (!email || !password) {
 
             return res.status(400).json({
+
                 success: false,
-                message: "Email and password are required."
+
+                message:
+                    "Email and password are required."
+
             });
 
         }
 
+        /* =========================
+           CLEAN EMAIL
+        ========================= */
+
         const cleanEmail =
-            email.trim().toLowerCase();
+            String(email)
+                .trim()
+                .toLowerCase();
+
+        /* =========================
+           FIND USER
+        ========================= */
 
         const user =
             await User.findOne({
@@ -251,48 +311,72 @@ router.post("/login", async (req, res) => {
         if (!user) {
 
             return res.status(401).json({
+
                 success: false,
-                message: "Invalid email or password."
+
+                message:
+                    "Invalid email or password."
+
             });
 
         }
 
+        /* =========================
+           CHECK PASSWORD
+        ========================= */
+
         const passwordMatch =
             await bcrypt.compare(
-                password,
+                String(password),
                 user.password
             );
 
         if (!passwordMatch) {
 
             return res.status(401).json({
+
                 success: false,
-                message: "Invalid email or password."
+
+                message:
+                    "Invalid email or password."
+
             });
 
         }
+
+        /* =========================
+           SUCCESS
+        ========================= */
 
         return res.status(200).json({
 
             success: true,
 
-            message: "Login successful.",
+            message:
+                "Login successful.",
 
             user: {
 
-                id: user._id,
+                id:
+                    user._id,
 
-                fullName: user.fullName,
+                fullName:
+                    user.fullName,
 
-                email: user.email,
+                email:
+                    user.email,
 
-                phone: user.phone,
+                phone:
+                    user.phone,
 
-                balance: user.balance,
+                balance:
+                    user.balance,
 
-                totalInvested: user.totalInvested,
+                totalInvested:
+                    user.totalInvested,
 
-                totalProfit: user.totalProfit
+                totalProfit:
+                    user.totalProfit
 
             }
 
@@ -310,10 +394,7 @@ router.post("/login", async (req, res) => {
             success: false,
 
             message:
-                "Server error while logging in.",
-
-            error:
-                error.message
+                "Server error while logging in."
 
         });
 
