@@ -1,3 +1,4 @@
+```js
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -7,49 +8,133 @@ const authRoutes = require("./routes/auth");
 
 const app = express();
 
-app.use(cors());
+/*
+========================================================
+MIDDLEWARE
+========================================================
+*/
+
+app.use(cors({
+    origin: "*",
+    methods: [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "OPTIONS"
+    ],
+    allowedHeaders: [
+        "Content-Type",
+        "Authorization"
+    ]
+}));
+
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Test route
-app.get("/", (req, res) => {
-    res.status(200).json({
-        success: true,
-        message: "KCTTW backend is running."
-    });
-});
+app.use(express.urlencoded({
+    extended: true
+}));
 
-let isConnected = false;
 
-async function connectDB() {
-    if (isConnected) {
+/*
+========================================================
+MONGODB CONNECTION
+========================================================
+*/
+
+let mongoConnected = false;
+
+async function connectDatabase() {
+
+    if (mongoConnected) {
         return;
     }
 
     if (!process.env.MONGO_URI) {
-        throw new Error("MONGO_URI environment variable is missing.");
+
+        throw new Error(
+            "MONGO_URI environment variable is missing."
+        );
+
     }
 
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(
+        process.env.MONGO_URI
+    );
 
-    isConnected = true;
+    mongoConnected = true;
 
-    console.log("MongoDB connected successfully.");
+    console.log(
+        "MongoDB connected successfully."
+    );
+
 }
 
-// Authentication routes
-app.use("/api/auth", async (req, res, next) => {
+
+/*
+========================================================
+DATABASE MIDDLEWARE
+========================================================
+*/
+
+app.use(async (req, res, next) => {
+
     try {
-        await connectDB();
+
+        await connectDatabase();
+
         next();
+
     } catch (error) {
-        console.error("MongoDB connection error:", error);
+
+        console.error(
+            "MongoDB connection failed:",
+            error
+        );
 
         return res.status(500).json({
             success: false,
             message: "Database connection failed."
         });
+
     }
-}, authRoutes);
+
+});
+
+
+/*
+========================================================
+TEST ROUTE
+========================================================
+*/
+
+app.get("/", (req, res) => {
+
+    res.json({
+        success: true,
+        message: "KCTTW backend is running."
+    });
+
+});
+
+
+/*
+========================================================
+AUTH ROUTES
+========================================================
+*/
+
+app.use(
+    "/api/auth",
+    authRoutes
+);
+
+
+/*
+========================================================
+VERCEL EXPORT
+========================================================
+*/
 
 module.exports = app;
+```
