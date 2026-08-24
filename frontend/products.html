@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Shop KCTTW premium caps and shirts. Kamba Collection — To The World."
+    >
+
+    <title>KCTTW | Products</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- AOS -->
+    <link
+        href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Montserrat", sans-serif;
+            color: #fff;
+            background: #080808;
+            overflow-x: hidden;
+        }
+
+        /* ================================
+           BACKGROUND
+        ================================= */
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+
+            background:
+                radial-gradient(
+                    circle at 15% 20%,
+                    rgba(255,255,255,.06),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 85% 75%,
+                    rgba(255,255,255,.05),
+                    transparent 30%
+                );
+
+            pointer-events: none;
+        }
+
+        .background-glow {
+            position: fixed;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: .15;
+            z-index: -2;
+            pointer-events: none;
+            animation: glowMove 8s ease-in-out infinite alternate;
+        }
+
+        .glow-one {
+            background: #fff;
+            left: -180px;
+            top: 20%;
+        }
+
+        .glow-two {
+            background: #aaa;
+            right: -180px;
+            bottom: 10%;
+            animation-delay: 2s;
+        }
+
+        @keyframes glowMove {
+
+            from {
+                transform: translate(0, 0);
+            }
+
+            to {
+                transform: translate(80px, -50px);
+            }
+
+        }
+
+        /* ================================
+           NAVBAR
+        ================================= */
+
+        .kcttw-navbar {
+            background: rgba(5,5,5,.78);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .navbar-brand {
+            color: #fff !important;
+            font-size: 22px;
+            letter-spacing: 2px;
+        }
+
+        .brand-subtitle {
+            display: block;
+            font-size: 7px;
+            letter-spacing: 2px;
+            opacity: .45;
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,.65) !important;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 0 5px;
+            transition: .3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fff !important;
+        }
+
+        .cart-link {
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 50px;
+            padding: 8px 14px !important;
+        }
+
+        .cart-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            margin-left: 4px;
+            padding: 0 5px;
+            border-radius: 50%;
+            background: #fff;
+            color: #000;
+            font-size: 9px;
+            font-weight: 900;
+        }
+
+        /* ================================
+           HERO
+        ================================= */
+
+        .products-hero {
+            min-height: 55vh;
+            padding: 150px 20px 80px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .products-hero-content {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 5px;
+            opacity: .5;
+            margin-bottom: 20px;
+        }
+
+        .products-hero h1 {
+            font-size: clamp(48px, 9vw, 100px);
+            line-height: .9;
+            font-weight: 900;
+            letter-spacing: -4px;
+            margin: 0;
+        }
+
+        .products-hero h1 span {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,.7);
+        }
+
+        .products-hero p {
+            max-width: 600px;
+            margin: 28px auto 0;
+            color: rgba(255,255,255,.55);
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        .hero-line {
+            width: 100px;
+            height: 1px;
+            background: rgba(255,255,255,.4);
+            margin: 30px auto 0;
+            animation: linePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes linePulse {
+
+            0%, 100% {
+                width: 60px;
+                opacity: .3;
+            }
+
+            50% {
+                width: 140px;
+                opacity: 1;
+            }
+
+        }
+
+        /* ================================
+           PRODUCTS
+        ================================= */
+
+        .products-section {
+            padding: 30px 0 120px;
+        }
+
+        .product-card {
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 28px;
+            background: rgba(255,255,255,.045);
+            border: 1px solid rgba(255,255,255,.1);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            transition:
+                transform .5s cubic-bezier(.2,.8,.2,1),
+                box-shadow .5s ease,
+                border-color .4s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(255,255,255,.3);
+            box-shadow:
+                0 35px 80px rgba(0,0,0,.5);
+        }
+
+        .product-image-container {
+            height: 390px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.09),
+                    transparent 65%
+                );
+        }
+
+        .product-image-container::before {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border: 1px solid rgba(255,255,255,.09);
+            border-radius: 50%;
+            animation: ringPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes ringPulse {
+
+            0%, 100% {
+                transform: scale(.9);
+                opacity: .3;
+            }
+
+            50% {
+                transform: scale(1.12);
+                opacity: .8;
+            }
+
+        }
+
+        .product-image-container::after {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 45%;
+            height: 300%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255,255,255,.2),
+                transparent
+            );
+            transform: rotate(25deg);
+            transition: left .9s ease;
+            pointer-events: none;
+        }
+
+        .product-card:hover
+        .product-image-container::after {
+            left: 150%;
+        }
+
+        .product-image {
+            position: relative;
+            z-index: 2;
+            width: 85%;
+            height: 85%;
+            object-fit: contain;
+            filter: drop-shadow(
+                0 25px 30px rgba(0,0,0,.5)
+            );
+
+            animation: productFloat 4s ease-in-out infinite;
+
+            transition:
+                transform .6s cubic-bezier(.2,.8,.2,1),
+                filter .5s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform:
+                scale(1.1)
+                rotate(-2deg);
+
+            filter: drop-shadow(
+                0 35px 40px rgba(0,0,0,.7)
+            );
+        }
+
+        @keyframes productFloat {
+
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+
+        }
+
+        .product-tag {
+            position: absolute;
+            z-index: 5;
+            top: 20px;
+            left: 20px;
+            padding: 8px 13px;
+            border-radius: 50px;
+            background: #fff;
+            color: #000;
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-category {
+            font-size: 9px;
+            letter-spacing: 3px;
+            font-weight: 800;
+            opacity: .4;
+            margin-bottom: 8px;
+        }
+
+        .product-info h2 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            color: rgba(255,255,255,.5);
+            font-size: 12px;
+            line-height: 1.7;
+            min-height: 42px;
+        }
+
+        .price {
+            font-size: 22px;
+            font-weight: 900;
+            margin: 18px 0;
+        }
+
+        /* ================================
+           COLOR SELECTOR
+        ================================= */
+
+        .color-title {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            opacity: .65;
+        }
+
+        .color-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .color-option {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .color-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .color-circle {
+            width: 29px;
+            height: 29px;
+            display: block;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,.2);
+            transition:
+                transform .3s ease,
+                border-color .3s ease,
+                box-shadow .3s ease;
+        }
+
+        .color-option:hover .color-circle {
+            transform: scale(1.15);
+            border-color: #fff;
+        }
+
+        .color-option input:checked + .color-circle {
+            border-color: #fff;
+            box-shadow:
+                0 0 0 3px rgba(255,255,255,.15),
+                0 0 18px rgba(255,255,255,.3);
+            transform: scale(1.12);
+        }
+
+        .color-name {
+            display: block;
+            margin-top: 8px;
+            font-size: 9px;
+            color: rgba(255,255,255,.45);
+            min-height: 13px;
+        }
+
+        /* COLORS */
+
+        .black {
+            background: #050505;
+        }
+
+        .white {
+            background: #fff;
+        }
+
+        .red {
+            background: #c62828;
+        }
+
+        .blue {
+            background: #1565c0;
+        }
+
+        .green {
+            background: #168447;
+        }
+
+        .yellow {
+            background: #f2c94c;
+        }
+
+        .orange {
+            background: #ef7d20;
+        }
+
+        .pink {
+            background: #e96c91;
+        }
+
+        .purple {
+            background: #7b3fc6;
+        }
+
+        .navy {
+            background: #15294a;
+        }
+
+        /* ================================
+           BUTTON
+        ================================= */
+
+        .add-cart-btn {
+            width: 100%;
+            border: 1px solid rgba(255,255,255,.2);
+            background: rgba(255,255,255,.07);
+            color: #fff;
+            border-radius: 50px;
+            padding: 14px 18px;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            transition: .35s ease;
+        }
+
+        .add-cart-btn:hover {
+            background: #fff;
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        .add-cart-btn:active {
+            transform: scale(.97);
+        }
+
+        /* ================================
+           VIEW CART
+        ================================= */
+
+        .view-cart {
+            text-align: center;
+            margin-top: 70px;
+        }
+
+        .view-cart a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 25px;
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 800;
+            transition: .3s ease;
+        }
+
+        .view-cart a:hover {
+            background: #fff;
+            color: #000;
+            transform: translateY(-4px);
+        }
+
+        /* ================================
+           TOAST
+        ================================= */
+
+        #cartToast {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 9999;
+
+            background: rgba(15,15,15,.92);
+            border: 1px solid rgba(255,255,255,.15);
+            backdrop-filter: blur(15px);
+
+            color: #fff;
+
+            padding: 15px 20px;
+            border-radius: 15px;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            transform:
+                translateY(120px);
+
+            opacity: 0;
+
+            transition:
+                transform .4s ease,
+                opacity .4s ease;
+        }
+
+        #cartToast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* ================================
+           MOBILE
+        ================================= */
+
+        @media (max-width: 767px) {
+
+            .products-hero {
+                min-height: 48vh;
+                padding-top: 130px;
+            }
+
+            .products-hero h1 {
+                letter-spacing: -2px;
+            }
+
+            .products-section {
+                padding-bottom: 80px;
+            }
+
+            .product-image-container {
+                height: 310px;
+            }
+
+            .product-info {
+                padding: 20px;
+            }
+
+            .product-info h2 {
+                font-size: 19px;
+            }
+
+            .price {
+                font-size: 20px;
+            }
+
+            .navbar-collapse {
+                background: rgba(5,5,5,.96);
+                margin-top: 10px;
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- Animated background -->
+
+<div class="background-glow glow-one"></div>
+<div class="background-glow glow-two"></div>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top kcttw-navbar">
+
+    <div class="container">
+
+        <a
+            class="navbar-brand"
+            href="index.html"
+        >
+            KCTTW
+
+            <span class="brand-subtitle">
+                KAMBA COLLECTION TO THE WORLD
+            </span>
+        </a>
+
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+        <div
+            class="collapse navbar-collapse"
+            id="navbarNav"
+        >
+
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                <li class="nav-item">
+                    <a
+                        class="nav-link"
+                        href="index.html"
+                    >
+                        Home
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a
+                        class="nav-link active"
+                        href="products.html"
+                    >
+                        Products
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a
+                        class="nav-link"
+                        href="about.html"
+                    >
+                        About
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a
+                        class="nav-link"
+                        href="contact.html"
+                    >
+                        Contact
+                    </a>
+                </li>
+
+                <li class="nav-item ms-lg-2">
+
+                    <a
+                        class="nav-link cart-link"
+                        href="cart.html"
+                    >
+
+                        <i class="bi bi-bag"></i>
+
+                        Cart
+
+                        <span
+                            id="cartCount"
+                            class="cart-count"
+                        >
+                            0
+                        </span>
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item ms-lg-2">
+
+                    <a
+                        class="btn btn-outline-light btn-sm rounded-pill px-3"
+                        href="login.html"
+                    >
+                        Login
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="products-hero">
+
+    <div
+        class="products-hero-content"
+        data-aos="fade-up"
+        data-aos-duration="1200"
+    >
+
+        <span class="eyebrow">
+            KCTTW COLLECTION
+        </span>
+
+        <h1>
+            WEAR <span>YOUR</span> STYLE
+        </h1>
+
+        <p>
+            Discover premium KCTTW caps and shirts.
+            Choose your favorite color and make every
+            piece your own.
+        </p>
+
+        <div class="hero-line"></div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PRODUCTS
+===================================================== -->
+
+<section class="products-section">
+
+    <div class="container">
+
+        <div class="row g-4">
+
+
+            <!-- =================================================
+                 CAP
+            ================================================== -->
+
+            <div
+                class="col-12 col-md-6 col-lg-4"
+                data-aos="fade-up"
+                data-aos-delay="100"
+            >
+
+                <div class="product-card">
+
+                    <div class="product-image-container">
+
+                        <span class="product-tag">
+                            BEST SELLER
+                        </span>
+
+                        <img
+                            src="assets/cap.png"
+                            class="product-image"
+                            alt="KCTTW Premium Cap"
+                        >
+
+                    </div>
+
+
+                    <div class="product-info">
+
+                        <div class="product-category">
+                            HEADWEAR
+                        </div>
+
+                        <h2>
+                            KCTTW Premium Cap
+                        </h2>
+
+                        <p class="product-description">
+                            Premium KCTTW cap designed for
+                            everyday confidence and style.
+                        </p>
+
+                        <div class="price">
+                            ₦5,000
+                        </div>
+
+
+                        <!-- COLORS -->
+
+                        <div class="color-title">
+                            CHOOSE CAP COLOR
+                        </div>
+
+                        <div class="color-options">
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="capColor"
+                                    value="Black"
+                                    checked
+                                >
+
+                                <span class="color-circle black"></span>
+
+                                <span class="color-name">
+                                    Black
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="capColor"
+                                    value="White"
+                                >
+
+                                <span class="color-circle white"></span>
+
+                                <span class="color-name">
+                                    White
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="capColor"
+                                    value="Red"
+                                >
+
+                                <span class="color-circle red"></span>
+
+                                <span class="color-name">
+                                    Red
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="capColor"
+                                    value="Blue"
+                                >
+
+                                <span class="color-circle blue"></span>
+
+                                <span class="color-name">
+                                    Blue
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="capColor"
+                                    value="Green"
+                                >
+
+                                <span class="color-circle green"></span>
+
+                                <span class="color-name">
+                                    Green
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="capColor"
+                                    value="Yellow"
+                                >
+
+                                <span class="color-circle yellow"></span>
+
+                                <span class="color-name">
+                                    Yellow
+                                </span>
+
+                            </label>
+
+                        </div>
+
+
+                        <button
+                            class="add-cart-btn"
+                            onclick="addProductToCart(
+                                'KCTTW Premium Cap',
+                                5000,
+                                'assets/cap.png',
+                                'capColor'
+                            )"
+                        >
+
+                            ADD TO CART
+
+                            <i class="bi bi-bag-plus"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ROUND NECK
+            ================================================== -->
+
+            <div
+                class="col-12 col-md-6 col-lg-4"
+                data-aos="fade-up"
+                data-aos-delay="200"
+            >
+
+                <div class="product-card">
+
+                    <div class="product-image-container">
+
+                        <span class="product-tag">
+                            NEW
+                        </span>
+
+                        <img
+                            src="assets/round-neck.png"
+                            class="product-image"
+                            alt="KCTTW Round Neck Shirt"
+                        >
+
+                    </div>
+
+
+                    <div class="product-info">
+
+                        <div class="product-category">
+                            SHIRTS
+                        </div>
+
+                        <h2>
+                            Round Neck Shirt
+                        </h2>
+
+                        <p class="product-description">
+                            Comfortable premium round neck
+                            shirt with the KCTTW identity.
+                        </p>
+
+                        <div class="price">
+                            ₦8,000
+                        </div>
+
+
+                        <div class="color-title">
+                            CHOOSE SHIRT COLOR
+                        </div>
+
+                        <div class="color-options">
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="roundColor"
+                                    value="Black"
+                                    checked
+                                >
+
+                                <span class="color-circle black"></span>
+
+                                <span class="color-name">
+                                    Black
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="roundColor"
+                                    value="White"
+                                >
+
+                                <span class="color-circle white"></span>
+
+                                <span class="color-name">
+                                    White
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="roundColor"
+                                    value="Red"
+                                >
+
+                                <span class="color-circle red"></span>
+
+                                <span class="color-name">
+                                    Red
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="roundColor"
+                                    value="Blue"
+                                >
+
+                                <span class="color-circle blue"></span>
+
+                                <span class="color-name">
+                                    Blue
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="roundColor"
+                                    value="Green"
+                                >
+
+                                <span class="color-circle green"></span>
+
+                                <span class="color-name">
+                                    Green
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="roundColor"
+                                    value="Yellow"
+                                >
+
+                                <span class="color-circle yellow"></span>
+
+                                <span class="color-name">
+                                    Yellow
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="roundColor"
+                                    value="Orange"
+                                >
+
+                                <span class="color-circle orange"></span>
+
+                                <span class="color-name">
+                                    Orange
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="roundColor"
+                                    value="Pink"
+                                >
+
+                                <span class="color-circle pink"></span>
+
+                                <span class="color-name">
+                                    Pink
+                                </span>
+
+                            </label>
+
+                        </div>
+
+
+                        <button
+                            class="add-cart-btn"
+                            onclick="addProductToCart(
+                                'KCTTW Round Neck Shirt',
+                                8000,
+                                'assets/round-neck.png',
+                                'roundColor'
+                            )"
+                        >
+
+                            ADD TO CART
+
+                            <i class="bi bi-bag-plus"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 COLLARED
+            ================================================== -->
+
+            <div
+                class="col-12 col-md-6 col-lg-4"
+                data-aos="fade-up"
+                data-aos-delay="300"
+            >
+
+                <div class="product-card">
+
+                    <div class="product-image-container">
+
+                        <span class="product-tag">
+                            PREMIUM
+                        </span>
+
+                        <img
+                            src="assets/collared-shirt2.png"
+                            class="product-image"
+                            alt="KCTTW Collared Shirt"
+                        >
+
+                    </div>
+
+
+                    <div class="product-info">
+
+                        <div class="product-category">
+                            SHIRTS
+                        </div>
+
+                        <h2>
+                            Collared Shirt
+                        </h2>
+
+                        <p class="product-description">
+                            Sharp, sophisticated and premium.
+                            Designed for a confident appearance.
+                        </p>
+
+                        <div class="price">
+                            ₦15,000
+                        </div>
+
+
+                        <div class="color-title">
+                            CHOOSE SHIRT COLOR
+                        </div>
+
+                        <div class="color-options">
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="collarColor"
+                                    value="Black"
+                                    checked
+                                >
+
+                                <span class="color-circle black"></span>
+
+                                <span class="color-name">
+                                    Black
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="collarColor"
+                                    value="White"
+                                >
+
+                                <span class="color-circle white"></span>
+
+                                <span class="color-name">
+                                    White
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="collarColor"
+                                    value="Blue"
+                                >
+
+                                <span class="color-circle blue"></span>
+
+                                <span class="color-name">
+                                    Blue
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="collarColor"
+                                    value="Green"
+                                >
+
+                                <span class="color-circle green"></span>
+
+                                <span class="color-name">
+                                    Green
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="collarColor"
+                                    value="Yellow"
+                                >
+
+                                <span class="color-circle yellow"></span>
+
+                                <span class="color-name">
+                                    Yellow
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="collarColor"
+                                    value="Orange"
+                                >
+
+                                <span class="color-circle orange"></span>
+
+                                <span class="color-name">
+                                    Orange
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="collarColor"
+                                    value="Purple"
+                                >
+
+                                <span class="color-circle purple"></span>
+
+                                <span class="color-name">
+                                    Purple
+                                </span>
+
+                            </label>
+
+
+                            <label class="color-option">
+
+                                <input
+                                    type="radio"
+                                    name="collarColor"
+                                    value="Pink"
+                                >
+
+                                <span class="color-circle pink"></span>
+
+                                <span class="color-name">
+                                    Pink
+                                </span>
+
+                            </label>
+
+                        </div>
+
+
+                        <button
+                            class="add-cart-btn"
+                            onclick="addProductToCart(
+                                'KCTTW Collared Shirt',
+                                15000,
+                                'assets/collared-shirt.png',
+                                'collarColor'
+                            )"
+                        >
+
+                            ADD TO CART
+
+                            <i class="bi bi-bag-plus"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="view-cart"
+            data-aos="fade-up"
+        >
+
+            <a href="cart.html">
+
+                <i class="bi bi-bag"></i>
+
+                VIEW MY CART
+
+                <span
+                    id="bottomCartCount"
+                >
+                    0
+                </span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Toast -->
+
+<div id="cartToast">
+    <i class="bi bi-check-circle-fill"></i>
+    Product added to your cart
+</div>
+
+
+<!-- Bootstrap -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
+
+<!-- AOS -->
+
+<script
+    src="https://unpkg.com/aos@2.3.1/dist/aos.js"
+></script>
+
+
+<script>
+
+    /* =====================================================
+       AOS
+    ===================================================== */
+
+    AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 80,
+        easing: "ease-out-cubic"
+    });
+
+
+    /* =====================================================
+       ADD PRODUCT TO CART
+    ===================================================== */
+
+    function addProductToCart(
+        name,
+        price,
+        image,
+        colorGroup
+    ) {
+
+        const selected =
+            document.querySelector(
+                'input[name="' +
+                colorGroup +
+                '"]:checked'
+            );
+
+
+        const color =
+            selected
+                ? selected.value
+                : "Black";
+
+
+        let cart =
+            JSON.parse(
+                localStorage.getItem("kcttwCart")
+            ) || [];
+
+
+        const existing =
+            cart.find(
+                item =>
+                    item.name === name &&
+                    item.color === color
+            );
+
+
+        if (existing) {
+
+            existing.quantity =
+                Number(existing.quantity || 1) + 1;
+
+        } else {
+
+            cart.push({
+
+                name: name,
+
+                price: price,
+
+                image: image,
+
+                color: color,
+
+                quantity: 1
+
+            });
+
+        }
+
+
+        localStorage.setItem(
+            "kcttwCart",
+            JSON.stringify(cart)
+        );
+
+
+        updateCartCount();
+
+
+        showToast(
+            name +
+            " (" +
+            color +
+            ") added to cart 🛒"
+        );
+
+    }
+
+
+    /* =====================================================
+       CART COUNT
+    ===================================================== */
+
+    function updateCartCount() {
+
+        const cart =
+            JSON.parse(
+                localStorage.getItem("kcttwCart")
+            ) || [];
+
+
+        const count =
+            cart.reduce(
+                (total, item) =>
+                    total +
+                    Number(item.quantity || 1),
+                0
+            );
+
+
+        const topCount =
+            document.getElementById(
+                "cartCount"
+            );
+
+
+        const bottomCount =
+            document.getElementById(
+                "bottomCartCount"
+            );
+
+
+        if (topCount) {
+
+            topCount.textContent =
+                count;
+
+        }
+
+
+        if (bottomCount) {
+
+            bottomCount.textContent =
+                count;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       TOAST
+    ===================================================== */
+
+    function showToast(message) {
+
+        const toast =
+            document.getElementById(
+                "cartToast"
+            );
+
+
+        toast.innerHTML =
+            '<i class="bi bi-check-circle-fill"></i> ' +
+            message;
+
+
+        toast.classList.add(
+            "show"
+        );
+
+
+        clearTimeout(
+            window.kcttwToastTimer
+        );
+
+
+        window.kcttwToastTimer =
+            setTimeout(
+                function() {
+
+                    toast.classList.remove(
+                        "show"
+                    );
+
+                },
+                2500
+            );
+
+    }
+
+
+    /* =====================================================
+       INITIALIZE
+    ===================================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            updateCartCount();
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

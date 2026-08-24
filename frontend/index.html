@@ -1,0 +1,2079 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="KCTTW — Kamba Collection To The World. Premium caps and shirts designed for confidence and style."
+    >
+
+    <title>KCTTW | Kamba Collection — To The World</title>
+
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- AOS -->
+    <link
+        href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- Main CSS -->
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           HOME PRODUCTS
+        ===================================================== */
+
+        .home-products {
+            position: relative;
+            padding: 110px 0;
+            overflow: hidden;
+        }
+
+
+        .home-products::before {
+            content: "";
+            position: absolute;
+
+            width: 500px;
+            height: 500px;
+
+            left: -250px;
+            top: 100px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,.035);
+
+            filter: blur(20px);
+
+            pointer-events: none;
+        }
+
+
+        .home-products::after {
+            content: "";
+            position: absolute;
+
+            width: 450px;
+            height: 450px;
+
+            right: -220px;
+            bottom: 50px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,.03);
+
+            filter: blur(20px);
+
+            pointer-events: none;
+        }
+
+
+        .home-product-heading {
+            position: relative;
+            z-index: 2;
+
+            text-align: center;
+
+            margin-bottom: 55px;
+        }
+
+
+        .home-product-heading span {
+            display: inline-block;
+
+            font-size: 11px;
+
+            letter-spacing: 5px;
+
+            font-weight: 800;
+
+            opacity: .55;
+
+            margin-bottom: 12px;
+        }
+
+
+        .home-product-heading h2 {
+            font-size:
+                clamp(38px, 6vw, 70px);
+
+            line-height: 1;
+
+            font-weight: 900;
+
+            margin: 0;
+        }
+
+
+        .home-product-heading h2 strong {
+            color: transparent;
+
+            -webkit-text-stroke:
+                1px currentColor;
+        }
+
+
+        .home-product-heading p {
+            max-width: 600px;
+
+            margin:
+                20px auto 0;
+
+            opacity: .55;
+        }
+
+
+        /* CARD */
+
+        .home-product-card {
+            position: relative;
+
+            height: 100%;
+
+            border-radius: 28px;
+
+            overflow: hidden;
+
+            background:
+                rgba(255,255,255,.045);
+
+            border:
+                1px solid rgba(255,255,255,.09);
+
+            backdrop-filter:
+                blur(16px);
+
+            transition:
+                transform .5s ease,
+                box-shadow .5s ease,
+                border-color .4s ease;
+        }
+
+
+        .home-product-card:hover {
+
+            transform:
+                translateY(-14px);
+
+            border-color:
+                rgba(255,255,255,.28);
+
+            box-shadow:
+                0 35px 80px rgba(0,0,0,.4);
+        }
+
+
+        /* IMAGE */
+
+        .home-product-image {
+
+            position: relative;
+
+            height: 360px;
+
+            overflow: hidden;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(255,255,255,.10),
+                    transparent 68%
+                );
+        }
+
+
+        .home-product-image::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 230px;
+            height: 230px;
+
+            border-radius: 50%;
+
+            border:
+                1px solid rgba(255,255,255,.10);
+
+            animation:
+                productPulse 4s ease-in-out infinite;
+        }
+
+
+        .home-product-image::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: -100%;
+            left: -100%;
+
+            width: 50%;
+            height: 300%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,255,255,.18),
+                    transparent
+                );
+
+            transform:
+                rotate(25deg);
+
+            transition:
+                left .8s ease;
+
+            pointer-events: none;
+        }
+
+
+        .home-product-card:hover
+        .home-product-image::after {
+
+            left: 150%;
+        }
+
+
+        .home-product-image img {
+
+            position: relative;
+
+            z-index: 2;
+
+            width: 82%;
+            height: 82%;
+
+            object-fit: contain;
+
+            filter:
+                drop-shadow(
+                    0 25px 25px rgba(0,0,0,.35)
+                );
+
+            animation:
+                productFloat 4s ease-in-out infinite;
+
+            transition:
+                transform .6s ease,
+                filter .5s ease;
+        }
+
+
+        .home-product-card:hover
+        .home-product-image img {
+
+            transform:
+                scale(1.1)
+                rotate(-2deg);
+
+            filter:
+                drop-shadow(
+                    0 30px 35px rgba(0,0,0,.55)
+                );
+        }
+
+
+        /* TAG */
+
+        .home-product-tag {
+
+            position: absolute;
+
+            top: 20px;
+            left: 20px;
+
+            z-index: 5;
+
+            padding:
+                8px 13px;
+
+            border-radius: 50px;
+
+            background:
+                rgba(255,255,255,.95);
+
+            color: #000;
+
+            font-size: 9px;
+
+            font-weight: 900;
+
+            letter-spacing: 1.5px;
+        }
+
+
+        /* INFO */
+
+        .home-product-info {
+
+            position: relative;
+
+            z-index: 3;
+
+            padding: 25px;
+        }
+
+
+        .home-product-category {
+
+            font-size: 9px;
+
+            letter-spacing: 3px;
+
+            font-weight: 800;
+
+            opacity: .45;
+
+            margin-bottom: 8px;
+        }
+
+
+        .home-product-info h3 {
+
+            font-size: 21px;
+
+            font-weight: 800;
+
+            margin-bottom: 8px;
+        }
+
+
+        .home-product-info p {
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            opacity: .55;
+
+            margin-bottom: 20px;
+        }
+
+
+        .home-product-bottom {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+        }
+
+
+        .home-product-price {
+
+            font-size: 20px;
+
+            font-weight: 900;
+
+            white-space: nowrap;
+        }
+
+
+        /* BUTTON */
+
+        .home-product-button {
+
+            border:
+                1px solid rgba(255,255,255,.18);
+
+            background:
+                rgba(255,255,255,.07);
+
+            color: inherit;
+
+            border-radius: 50px;
+
+            padding:
+                11px 17px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: .5px;
+
+            transition:
+                .35s ease;
+
+            cursor: pointer;
+        }
+
+
+        .home-product-button:hover {
+
+            background: #fff;
+
+            color: #000;
+
+            transform:
+                translateX(4px);
+        }
+
+
+        .home-product-button i {
+
+            margin-left: 5px;
+        }
+
+
+        /* FLOAT */
+
+        @keyframes productFloat {
+
+            0%,
+            100% {
+
+                transform:
+                    translateY(0);
+            }
+
+            50% {
+
+                transform:
+                    translateY(-12px);
+            }
+        }
+
+
+        /* PULSE */
+
+        @keyframes productPulse {
+
+            0%,
+            100% {
+
+                transform:
+                    scale(.95);
+
+                opacity:
+                    .4;
+            }
+
+            50% {
+
+                transform:
+                    scale(1.08);
+
+                opacity:
+                    .8;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 767px) {
+
+            .home-products {
+
+                padding:
+                    80px 0;
+            }
+
+
+            .home-product-heading {
+
+                margin-bottom:
+                    35px;
+            }
+
+
+            .home-product-image {
+
+                height:
+                    300px;
+            }
+
+
+            .home-product-image img {
+
+                width:
+                    78%;
+
+                height:
+                    78%;
+            }
+
+
+            .home-product-info {
+
+                padding:
+                    20px;
+            }
+
+
+            .home-product-info h3 {
+
+                font-size:
+                    18px;
+            }
+
+
+            .home-product-info p {
+
+                font-size:
+                    12px;
+            }
+
+
+            .home-product-price {
+
+                font-size:
+                    18px;
+            }
+
+
+            .home-product-button {
+
+                padding:
+                    10px 13px;
+
+                font-size:
+                    9px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     LOADER
+===================================================== -->
+
+<div id="loader">
+
+    <div class="loader-logo">
+        KCTTW
+    </div>
+
+    <div class="loader-line"></div>
+
+    <p>
+        Kamba Collection — To The World
+    </p>
+
+</div>
+
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav
+    class="navbar navbar-expand-lg navbar-dark fixed-top kcttw-navbar"
+>
+
+    <div class="container">
+
+
+        <a
+            class="navbar-brand"
+            href="index.html"
+        >
+
+            <span class="brand-kc">
+                KCTTW
+            </span>
+
+            <small>
+                Kamba Collection To The World
+            </small>
+
+        </a>
+
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNavbar"
+        >
+
+            <span
+                class="navbar-toggler-icon"
+            ></span>
+
+        </button>
+
+
+        <div
+            class="collapse navbar-collapse"
+            id="mainNavbar"
+        >
+
+            <ul
+                class="navbar-nav ms-auto align-items-lg-center"
+            >
+
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link active"
+                        href="index.html"
+                    >
+                        Home
+                    </a>
+
+                </li>
+
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="products.html"
+                    >
+                        Products
+                    </a>
+
+                </li>
+
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="about.html"
+                    >
+                        About
+                    </a>
+
+                </li>
+
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="contact.html"
+                    >
+                        Contact
+                    </a>
+
+                </li>
+
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link cart-link"
+                        href="cart.html"
+                    >
+
+                        <i class="bi bi-bag"></i>
+
+                        Cart
+
+                        <span
+                            id="cartCount"
+                            class="cart-count"
+                        >
+                            0
+                        </span>
+
+                    </a>
+
+                </li>
+
+
+                <li class="nav-item ms-lg-2">
+
+                    <a
+                        class="btn btn-kcttw-login"
+                        href="login.html"
+                    >
+                        Login
+                    </a>
+
+                </li>
+
+
+                <li class="nav-item ms-lg-2">
+
+                    <a
+                        class="btn btn-kcttw-register"
+                        href="register.html"
+                    >
+                        Register
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section
+    id="home"
+    class="hero-section"
+>
+
+    <div class="hero-overlay"></div>
+
+
+    <div class="floating-shape shape-one"></div>
+
+    <div class="floating-shape shape-two"></div>
+
+    <div class="floating-shape shape-three"></div>
+
+
+    <div class="container">
+
+        <div
+            class="row align-items-center min-vh-100"
+        >
+
+
+            <div
+                class="col-lg-6 hero-content"
+                data-aos="fade-right"
+            >
+
+                <span class="hero-small-title">
+                    KAMBA COLLECTION
+                </span>
+
+
+                <h1>
+
+                    WEAR IT.
+
+                    <span>
+                        OWN IT.
+                    </span>
+
+                    LIVE IT.
+
+                </h1>
+
+
+                <p>
+
+                    Welcome to KCTTW — where premium
+                    style meets personality. Discover
+                    quality caps and shirts designed
+                    to take your style to the world.
+
+                </p>
+
+
+                <div class="hero-buttons">
+
+                    <a
+                        href="#products"
+                        class="btn-main"
+                    >
+
+                        SHOP COLLECTION
+
+                        <i
+                            class="bi bi-arrow-right"
+                        ></i>
+
+                    </a>
+
+
+                    <a
+                        href="#about"
+                        class="btn-outline"
+                    >
+                        DISCOVER KCTTW
+                    </a>
+
+                </div>
+
+
+                <div class="hero-stats">
+
+                    <div>
+
+                        <strong>
+                            03+
+                        </strong>
+
+                        <span>
+                            Collections
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            100%
+                        </strong>
+
+                        <span>
+                            Style
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            ∞
+                        </strong>
+
+                        <span>
+                            Confidence
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div
+                class="col-lg-6 hero-image-wrapper"
+                data-aos="fade-left"
+            >
+
+                <div class="hero-image-circle">
+
+                    <div class="hero-glow"></div>
+
+                    <img
+                        src="assets/hero.png"
+                        alt="KCTTW Fashion"
+                        class="hero-image"
+                    >
+
+                </div>
+
+
+                <div class="floating-label label-one">
+
+                    <i
+                        class="bi bi-stars"
+                    ></i>
+
+                    Premium Style
+
+                </div>
+
+
+                <div class="floating-label label-two">
+
+                    KCTTW
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="scroll-indicator">
+
+        <span>
+            SCROLL
+        </span>
+
+        <div></div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     MARQUEE
+===================================================== -->
+
+<section class="marquee-section">
+
+    <div class="marquee">
+
+        <div class="marquee-content">
+
+            <span>KCTTW</span>
+            <i>✦</i>
+
+            <span>TO THE WORLD</span>
+            <i>✦</i>
+
+            <span>PREMIUM STYLE</span>
+            <i>✦</i>
+
+            <span>KCTTW</span>
+            <i>✦</i>
+
+            <span>TO THE WORLD</span>
+            <i>✦</i>
+
+            <span>PREMIUM STYLE</span>
+            <i>✦</i>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     HOME PRODUCTS
+===================================================== -->
+
+<section
+    id="products"
+    class="home-products"
+>
+
+    <div class="container">
+
+
+        <div
+            class="home-product-heading"
+            data-aos="fade-up"
+        >
+
+            <span>
+                THE COLLECTION
+            </span>
+
+            <h2>
+
+                FIND YOUR
+
+                <strong>
+                    STYLE
+                </strong>
+
+            </h2>
+
+            <p>
+
+                Premium KCTTW pieces designed
+                to make your style stand out
+                wherever you go.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="row g-4">
+
+
+            <!-- =================================================
+                 CAP
+            ================================================== -->
+
+            <div
+                class="col-12 col-md-6 col-lg-4"
+                data-aos="fade-up"
+                data-aos-delay="100"
+            >
+
+                <div
+                    class="home-product-card"
+                >
+
+                    <div
+                        class="home-product-image"
+                    >
+
+                        <span
+                            class="home-product-tag"
+                        >
+                            BEST SELLER
+                        </span>
+
+
+                        <img
+                            src="assets/cap.png"
+                            alt="KCTTW Premium Cap"
+                            loading="lazy"
+                            onerror="this.style.display='none'"
+                        >
+
+                    </div>
+
+
+                    <div
+                        class="home-product-info"
+                    >
+
+                        <div
+                            class="home-product-category"
+                        >
+                            HEADWEAR
+                        </div>
+
+
+                        <h3>
+                            KCTTW Premium Cap
+                        </h3>
+
+
+                        <p>
+                            Clean, bold and comfortable.
+                            Designed for everyday confidence.
+                        </p>
+
+
+                        <div
+                            class="home-product-bottom"
+                        >
+
+                            <div
+                                class="home-product-price"
+                            >
+                                ₦5,000
+                            </div>
+
+
+                            <button
+                                type="button"
+                                class="home-product-button"
+                                onclick="homeAddToCart('KCTTW Premium Cap', 5000, 'assets/cap.png')"
+                            >
+
+                                ADD TO CART
+
+                                <i
+                                    class="bi bi-plus-lg"
+                                ></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ROUND NECK
+            ================================================== -->
+
+            <div
+                class="col-12 col-md-6 col-lg-4"
+                data-aos="fade-up"
+                data-aos-delay="200"
+            >
+
+                <div
+                    class="home-product-card"
+                >
+
+                    <div
+                        class="home-product-image"
+                    >
+
+                        <span
+                            class="home-product-tag"
+                        >
+                            NEW
+                        </span>
+
+
+                        <img
+                            src="assets/round-neck.png"
+                            alt="KCTTW Round Neck Shirt"
+                            loading="lazy"
+                            onerror="this.style.display='none'"
+                        >
+
+                    </div>
+
+
+                    <div
+                        class="home-product-info"
+                    >
+
+                        <div
+                            class="home-product-category"
+                        >
+                            SHIRTS
+                        </div>
+
+
+                        <h3>
+                            Round Neck Shirt
+                        </h3>
+
+
+                        <p>
+                            A premium everyday shirt
+                            carrying the KCTTW identity.
+                        </p>
+
+
+                        <div
+                            class="home-product-bottom"
+                        >
+
+                            <div
+                                class="home-product-price"
+                            >
+                                ₦8,000
+                            </div>
+
+
+                            <button
+                                type="button"
+                                class="home-product-button"
+                                onclick="homeAddToCart('KCTTW Round Neck Shirt', 8000, 'assets/round-neck.png')"
+                            >
+
+                                ADD TO CART
+
+                                <i
+                                    class="bi bi-plus-lg"
+                                ></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 COLLARED SHIRT
+            ================================================== -->
+
+            <div
+                class="col-12 col-md-6 col-lg-4"
+                data-aos="fade-up"
+                data-aos-delay="300"
+            >
+
+                <div
+                    class="home-product-card"
+                >
+
+                    <div
+                        class="home-product-image"
+                    >
+
+                        <span
+                            class="home-product-tag"
+                        >
+                            PREMIUM
+                        </span>
+
+
+                        <img
+                            src="assets/collared-shirt2.png"
+                            alt="KCTTW Collared Shirt"
+                            loading="lazy"
+                            onerror="this.style.display='none'"
+                        >
+
+                    </div>
+
+
+                    <div
+                        class="home-product-info"
+                    >
+
+                        <div
+                            class="home-product-category"
+                        >
+                            SHIRTS
+                        </div>
+
+
+                        <h3>
+                            Collared Shirt
+                        </h3>
+
+
+                        <p>
+                            Sharp, premium and sophisticated.
+                            Made for a confident appearance.
+                        </p>
+
+
+                        <div
+                            class="home-product-bottom"
+                        >
+
+                            <div
+                                class="home-product-price"
+                            >
+                                ₦15,000
+                            </div>
+
+
+                            <button
+                                type="button"
+                                class="home-product-button"
+                                onclick="homeAddToCart('KCTTW Collared Shirt', 15000, 'assets/collared-shirt.png')"
+                            >
+
+                                ADD TO CART
+
+                                <i
+                                    class="bi bi-plus-lg"
+                                ></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- VIEW ALL -->
+
+        <div
+            class="text-center mt-5"
+            data-aos="fade-up"
+        >
+
+            <a
+                href="products.html"
+                class="btn-main"
+            >
+
+                VIEW ALL PRODUCTS
+
+                <i
+                    class="bi bi-arrow-right"
+                ></i>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     ABOUT
+===================================================== -->
+
+<section
+    id="about"
+    class="about-section"
+>
+
+    <div class="container">
+
+        <div
+            class="row align-items-center"
+        >
+
+
+            <div
+                class="col-lg-6"
+                data-aos="fade-right"
+            >
+
+                <div class="about-image">
+
+                    <img
+                        src="assets/hero.png"
+                        alt="KCTTW"
+                    >
+
+
+                    <div class="about-badge">
+
+                        <strong>
+                            KCTTW
+                        </strong>
+
+                        <span>
+                            TO THE WORLD
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div
+                class="col-lg-6"
+                data-aos="fade-left"
+            >
+
+                <div class="about-content">
+
+                    <span
+                        class="section-label"
+                    >
+                        ABOUT KCTTW
+                    </span>
+
+
+                    <h2>
+
+                        STYLE THAT
+
+                        <span>
+                            TRAVELS.
+                        </span>
+
+                    </h2>
+
+
+                    <p>
+                        KCTTW represents confidence,
+                        individuality and modern fashion.
+                    </p>
+
+
+                    <p>
+                        Our goal is simple — create
+                        quality fashion pieces that
+                        look good, feel good and carry
+                        the KCTTW identity wherever
+                        you go.
+                    </p>
+
+
+                    <div class="about-features">
+
+                        <div>
+
+                            <i
+                                class="bi bi-check-circle-fill"
+                            ></i>
+
+                            <span>
+                                Premium Quality
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <i
+                                class="bi bi-check-circle-fill"
+                            ></i>
+
+                            <span>
+                                Modern Designs
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <i
+                                class="bi bi-check-circle-fill"
+                            ></i>
+
+                            <span>
+                                Made To Stand Out
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CONTACT
+===================================================== -->
+
+<section
+    id="contact"
+    class="contact-section"
+>
+
+    <div class="container">
+
+
+        <div
+            class="section-heading text-center"
+            data-aos="fade-up"
+        >
+
+            <span>
+                GET IN TOUCH
+            </span>
+
+            <h2>
+                LET'S TALK
+            </h2>
+
+            <p>
+                Want to order something or ask a question?
+                We're ready to hear from you.
+            </p>
+
+        </div>
+
+
+        <div
+            class="contact-box"
+            data-aos="zoom-in"
+        >
+
+            <div class="row g-4">
+
+
+                <div class="col-md-4">
+
+                    <div class="contact-item">
+
+                        <i
+                            class="bi bi-whatsapp"
+                        ></i>
+
+                        <h4>
+                            WhatsApp
+                        </h4>
+
+                        <p>
+                            Chat directly with KCTTW
+                        </p>
+
+                        <a
+                            href="https://wa.me/2349072585516"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            Message Us
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="col-md-4">
+
+                    <div class="contact-item">
+
+                        <i
+                            class="bi bi-telephone"
+                        ></i>
+
+                        <h4>
+                            Call Us
+                        </h4>
+
+                        <p>
+                            09072585516
+                        </p>
+
+                        <a
+                            href="tel:+2349072585516"
+                        >
+                            Call KCTTW
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="col-md-4">
+
+                    <div class="contact-item">
+
+                        <i
+                            class="bi bi-envelope"
+                        ></i>
+
+                        <h4>
+                            Email
+                        </h4>
+
+                        <p>
+                            kcttw@gmail.com
+                        </p>
+
+                        <a
+                            href="mailto:kcttw@gmail.com"
+                        >
+                            Send Email
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="row g-4 mt-2">
+
+
+                <div class="col-md-4">
+
+                    <div class="contact-item">
+
+                        <i
+                            class="bi bi-instagram"
+                        ></i>
+
+                        <h4>
+                            Instagram
+                        </h4>
+
+                        <p>
+                            @kcttw
+                        </p>
+
+                        <a
+                            href="https://www.instagram.com/kcttw"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            Follow Us
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="col-md-4">
+
+                    <div class="contact-item">
+
+                        <i
+                            class="bi bi-instagram"
+                        ></i>
+
+                        <h4>
+                            Instagram
+                        </h4>
+
+                        <p>
+                            @kambacollections
+                        </p>
+
+                        <a
+                            href="https://www.instagram.com/kambacollections"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            Follow Us
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="col-md-4">
+
+                    <div class="contact-item">
+
+                        <i
+                            class="bi bi-tiktok"
+                        ></i>
+
+                        <h4>
+                            TikTok
+                        </h4>
+
+                        <p>
+                            @_kcttw
+                        </p>
+
+                        <a
+                            href="https://www.tiktok.com/@_kcttw"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            Follow Us
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <div class="container">
+
+        <div class="footer-content">
+
+            <div>
+
+                <h3>
+                    KCTTW
+                </h3>
+
+                <p>
+                    Kamba Collection — To The World.
+                </p>
+
+            </div>
+
+
+            <div class="social-links">
+
+                <a
+                    href="https://www.instagram.com/kcttw"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    <i
+                        class="bi bi-instagram"
+                    ></i>
+                </a>
+
+
+                <a
+                    href="https://www.tiktok.com/@_kcttw"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    <i
+                        class="bi bi-tiktok"
+                    ></i>
+                </a>
+
+
+                <a
+                    href="https://wa.me/2349072585516"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    <i
+                        class="bi bi-whatsapp"
+                    ></i>
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+
+                ©
+
+                <span id="year"></span>
+
+                KCTTW.
+                All Rights Reserved.
+
+            </span>
+
+
+            <span>
+                Kamba Collection — To The World
+            </span>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     BOOTSTRAP JS
+===================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
+
+
+<!-- =====================================================
+     AOS
+===================================================== -->
+
+<script
+    src="https://unpkg.com/aos@2.3.1/dist/aos.js"
+></script>
+
+
+
+<!-- =====================================================
+     HOME CART
+===================================================== -->
+
+<script>
+
+function homeAddToCart(
+    name,
+    price,
+    image
+) {
+
+    let cart =
+        JSON.parse(
+            localStorage.getItem("kcttwCart")
+        ) || [];
+
+
+    const existing =
+        cart.find(
+            item =>
+                item.name === name &&
+                (!item.color ||
+                 item.color === "Default")
+        );
+
+
+    if (existing) {
+
+        existing.quantity =
+            Number(
+                existing.quantity || 1
+            ) + 1;
+
+    } else {
+
+        cart.push({
+
+            name: name,
+
+            price: Number(price),
+
+            image: image,
+
+            color: "Default",
+
+            quantity: 1
+
+        });
+
+    }
+
+
+    localStorage.setItem(
+        "kcttwCart",
+        JSON.stringify(cart)
+    );
+
+
+    updateHomeCartCount();
+
+
+    showAddedMessage();
+
+}
+
+
+
+function updateHomeCartCount() {
+
+    const cart =
+        JSON.parse(
+            localStorage.getItem("kcttwCart")
+        ) || [];
+
+
+    const count =
+        cart.reduce(
+            (total, item) => {
+
+                return total +
+                    Number(
+                        item.quantity || 1
+                    );
+
+            },
+            0
+        );
+
+
+    const cartCount =
+        document.getElementById(
+            "cartCount"
+        );
+
+
+    if (cartCount) {
+
+        cartCount.textContent =
+            count;
+
+    }
+
+}
+
+
+
+function showAddedMessage() {
+
+    const message =
+        document.createElement("div");
+
+
+    message.innerHTML =
+        '<i class="bi bi-check-circle-fill"></i> Product added to cart';
+
+
+    message.style.position =
+        "fixed";
+
+    message.style.right =
+        "20px";
+
+    message.style.bottom =
+        "25px";
+
+    message.style.zIndex =
+        "99999";
+
+    message.style.background =
+        "#ffffff";
+
+    message.style.color =
+        "#000000";
+
+    message.style.padding =
+        "14px 20px";
+
+    message.style.borderRadius =
+        "50px";
+
+    message.style.fontWeight =
+        "700";
+
+    message.style.fontSize =
+        "13px";
+
+    message.style.boxShadow =
+        "0 15px 40px rgba(0,0,0,.3)";
+
+
+    document.body.appendChild(
+        message
+    );
+
+
+    setTimeout(
+        function() {
+
+            message.style.opacity =
+                "0";
+
+            message.style.transform =
+                "translateY(20px)";
+
+            message.style.transition =
+                ".4s ease";
+
+
+            setTimeout(
+                function() {
+
+                    message.remove();
+
+                },
+                400
+            );
+
+        },
+        1800
+    );
+
+}
+
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+
+        updateHomeCartCount();
+
+
+        if (
+            typeof AOS !==
+            "undefined"
+        ) {
+
+            AOS.init({
+
+                duration: 1000,
+
+                once: true,
+
+                offset: 80,
+
+                easing:
+                    "ease-out-cubic"
+
+            });
+
+        }
+
+
+        const year =
+            document.getElementById(
+                "year"
+            );
+
+
+        if (year) {
+
+            year.textContent =
+                new Date()
+                    .getFullYear();
+
+        }
+
+    }
+);
+
+</script>
+
+
+
+<!-- =====================================================
+     YOUR EXISTING JS
+===================================================== -->
+
+<script src="js/script.js"></script>
+
+<script src="animations.js"></script>
+
+<script src="cart-count.js"></script>
+
+<script src="js/main.js"></script>
+
+
+</body>
+
+</html>

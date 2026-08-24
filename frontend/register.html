@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<meta
+    name="description"
+    content="Create your KCTTW account — Kamba Collection To The World."
+>
+
+<title>Register | KCTTW — Kamba Collection</title>
+
+<link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+>
+
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+>
+
+<link
+    href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+    rel="stylesheet"
+>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+    body {
+        font-family: "Montserrat", sans-serif;
+    }
+
+    .register-section {
+        min-height: 100vh;
+        padding: 130px 15px 70px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .register-section::before {
+        content: "";
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        left: -250px;
+        top: 15%;
+        border-radius: 50%;
+        background: rgba(255,255,255,.04);
+        filter: blur(30px);
+        pointer-events: none;
+    }
+
+    .register-section::after {
+        content: "";
+        position: absolute;
+        width: 450px;
+        height: 450px;
+        right: -220px;
+        bottom: 5%;
+        border-radius: 50%;
+        background: rgba(255,255,255,.035);
+        filter: blur(30px);
+        pointer-events: none;
+    }
+
+    .register-container {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 520px;
+        margin: auto;
+    }
+
+    .register-card {
+        padding: 45px;
+        border-radius: 30px;
+        background: rgba(255,255,255,.045);
+        border: 1px solid rgba(255,255,255,.1);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 30px 80px rgba(0,0,0,.35);
+    }
+
+    .register-logo {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .register-logo h1 {
+        font-size: 42px;
+        font-weight: 900;
+        margin: 0;
+        letter-spacing: 2px;
+    }
+
+    .register-logo p {
+        margin: 8px 0 0;
+        font-size: 11px;
+        letter-spacing: 3px;
+        opacity: .5;
+        font-weight: 700;
+    }
+
+    .register-title {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .register-title h2 {
+        font-size: 28px;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .register-title p {
+        font-size: 13px;
+        opacity: .55;
+        margin: 0;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-wrapper > i {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: .5;
+        z-index: 2;
+    }
+
+    .register-input {
+        width: 100%;
+        height: 52px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,.12);
+        background: rgba(255,255,255,.055);
+        color: inherit;
+        padding: 0 45px;
+        outline: none;
+        transition: .3s ease;
+    }
+
+    .register-input::placeholder {
+        color: currentColor;
+        opacity: .35;
+    }
+
+    .register-input:focus {
+        border-color: rgba(255,255,255,.45);
+        background: rgba(255,255,255,.08);
+        box-shadow: 0 0 0 3px rgba(255,255,255,.04);
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        color: inherit;
+        opacity: .5;
+        cursor: pointer;
+    }
+
+    .password-toggle:hover {
+        opacity: 1;
+    }
+
+    .register-button {
+        width: 100%;
+        height: 54px;
+        border: none;
+        border-radius: 50px;
+        background: #fff;
+        color: #000;
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 1px;
+        transition: .35s ease;
+        margin-top: 5px;
+    }
+
+    .register-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(0,0,0,.3);
+    }
+
+    .register-button:disabled {
+        opacity: .6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .message-box {
+        display: none;
+        padding: 13px 15px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .message-box.success {
+        display: block;
+        background: rgba(40,167,69,.15);
+        border: 1px solid rgba(40,167,69,.35);
+        color: #7dff9b;
+    }
+
+    .message-box.error {
+        display: block;
+        background: rgba(220,53,69,.15);
+        border: 1px solid rgba(220,53,69,.35);
+        color: #ff8f9c;
+    }
+
+    .login-text {
+        text-align: center;
+        margin-top: 25px;
+        font-size: 12px;
+        opacity: .6;
+    }
+
+    .login-text a {
+        color: inherit;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .login-text a:hover {
+        text-decoration: underline;
+    }
+
+    .terms {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin: 5px 0 20px;
+        font-size: 10px;
+        line-height: 1.6;
+        opacity: .55;
+    }
+
+    .terms input {
+        margin-top: 3px;
+    }
+
+    @media (max-width: 576px) {
+        .register-section {
+            padding: 110px 15px 50px;
+        }
+
+        .register-card {
+            padding: 30px 20px;
+            border-radius: 24px;
+        }
+
+        .register-logo h1 {
+            font-size: 34px;
+        }
+
+        .register-title h2 {
+            font-size: 24px;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top kcttw-navbar">
+
+```
+<div class="container">
+
+    <a class="navbar-brand" href="index.html">
+
+        <span class="brand-kc">
+            KCTTW
+        </span>
+
+        <small>
+            Kamba Collection To The World
+        </small>
+
+    </a>
+
+    <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#mainNavbar"
+        aria-controls="mainNavbar"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+    >
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div
+        class="collapse navbar-collapse"
+        id="mainNavbar"
+    >
+
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">
+                    Home
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="products.html">
+                    Products
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="about.html">
+                    About
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="contact.html">
+                    Contact
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link cart-link" href="cart.html">
+
+                    <i class="bi bi-bag"></i>
+
+                    Cart
+
+                    <span
+                        id="cartCount"
+                        class="cart-count"
+                    >
+                        0
+                    </span>
+
+                </a>
+            </li>
+
+            <li class="nav-item ms-lg-2">
+
+                <a
+                    class="btn btn-kcttw-login"
+                    href="login.html"
+                >
+                    Login
+                </a>
+
+            </li>
+
+            <li class="nav-item ms-lg-2">
+
+                <a
+                    class="btn btn-kcttw-register"
+                    href="register.html"
+                >
+                    Register
+                </a>
+
+            </li>
+
+        </ul>
+
+    </div>
+
+</div>
+```
+
+</nav>
+
+<section class="register-section">
+
+```
+<div
+    class="register-container"
+    data-aos="fade-up"
+    data-aos-duration="1000"
+>
+
+    <div class="register-card">
+
+        <div class="register-logo">
+
+            <h1>KCTTW</h1>
+
+            <p>TO THE WORLD</p>
+
+        </div>
+
+
+        <div class="register-title">
+
+            <h2>Create Account</h2>
+
+            <p>
+                Join Kamba Collection and shop with us.
+            </p>
+
+        </div>
+
+
+        <div
+            id="registerMessage"
+            class="message-box"
+        ></div>
+
+
+        <form
+            id="registerForm"
+            novalidate
+        >
+
+            <div class="form-group">
+
+                <label
+                    for="fullName"
+                    class="form-label"
+                >
+                    FULL NAME
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="bi bi-person"></i>
+
+                    <input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        class="register-input"
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label
+                    for="email"
+                    class="form-label"
+                >
+                    EMAIL ADDRESS
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="bi bi-envelope"></i>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="register-input"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label
+                    for="phone"
+                    class="form-label"
+                >
+                    PHONE NUMBER
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="bi bi-telephone"></i>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        class="register-input"
+                        placeholder="08012345678"
+                        autocomplete="tel"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label
+                    for="password"
+                    class="form-label"
+                >
+                    PASSWORD
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="bi bi-lock"></i>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        class="register-input"
+                        placeholder="Create a password"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        id="togglePassword"
+                        aria-label="Show password"
+                    >
+                        <i class="bi bi-eye"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label
+                    for="confirmPassword"
+                    class="form-label"
+                >
+                    CONFIRM PASSWORD
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="bi bi-shield-lock"></i>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        class="register-input"
+                        placeholder="Confirm your password"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        id="toggleConfirmPassword"
+                        aria-label="Show password"
+                    >
+                        <i class="bi bi-eye"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="terms">
+
+                <input
+                    type="checkbox"
+                    id="terms"
+                    required
+                >
+
+                <label for="terms">
+                    I agree to the KCTTW terms and conditions.
+                </label>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="register-button"
+                id="registerButton"
+            >
+                CREATE ACCOUNT
+            </button>
+
+        </form>
+
+
+        <div class="login-text">
+
+            Already have an account?
+
+            <a href="login.html">
+                Login here
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</section>
+
+<footer>
+
+```
+<div class="container">
+
+    <div class="footer-content">
+
+        <div>
+
+            <h3>KCTTW</h3>
+
+            <p>
+                Kamba Collection — To The World.
+            </p>
+
+        </div>
+
+
+        <div class="social-links">
+
+            <a
+                href="https://www.instagram.com/kcttw"
+                target="_blank"
+                rel="noopener"
+            >
+                <i class="bi bi-instagram"></i>
+            </a>
+
+            <a
+                href="https://www.tiktok.com/@_kcttw"
+                target="_blank"
+                rel="noopener"
+            >
+                <i class="bi bi-tiktok"></i>
+            </a>
+
+            <a
+                href="https://wa.me/2349072585516"
+                target="_blank"
+                rel="noopener"
+            >
+                <i class="bi bi-whatsapp"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <span>
+            © <span id="year"></span>
+            KCTTW. All Rights Reserved.
+        </span>
+
+        <span>
+            Kamba Collection — To The World
+        </span>
+
+    </div>
+
+</div>
+```
+
+</footer>
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
+<script
+    src="https://unpkg.com/aos@2.3.1/dist/aos.js"
+></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* ============================================
+       AOS
+    ============================================ */
+
+    if (typeof AOS !== "undefined") {
+
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 80,
+            easing: "ease-out-cubic"
+        });
+
+    }
+
+
+    /* ============================================
+       CART COUNT
+    ============================================ */
+
+    function updateCartCount() {
+
+        let cart = [];
+
+        try {
+
+            cart =
+                JSON.parse(
+                    localStorage.getItem("kcttwCart")
+                ) || [];
+
+        } catch (error) {
+
+            cart = [];
+
+        }
+
+        const count =
+            cart.reduce(
+                function (total, item) {
+
+                    return total +
+                        Number(item.quantity || 1);
+
+                },
+                0
+            );
+
+        const cartCount =
+            document.getElementById("cartCount");
+
+        if (cartCount) {
+
+            cartCount.textContent = count;
+
+        }
+
+    }
+
+    updateCartCount();
+
+
+    /* ============================================
+       PASSWORD TOGGLE
+    ============================================ */
+
+    function setupPasswordToggle(buttonId, inputId) {
+
+        const button =
+            document.getElementById(buttonId);
+
+        const input =
+            document.getElementById(inputId);
+
+        if (!button || !input) {
+            return;
+        }
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                const icon =
+                    button.querySelector("i");
+
+                if (input.type === "password") {
+
+                    input.type = "text";
+
+                    if (icon) {
+                        icon.className =
+                            "bi bi-eye-slash";
+                    }
+
+                    button.setAttribute(
+                        "aria-label",
+                        "Hide password"
+                    );
+
+                } else {
+
+                    input.type = "password";
+
+                    if (icon) {
+                        icon.className =
+                            "bi bi-eye";
+                    }
+
+                    button.setAttribute(
+                        "aria-label",
+                        "Show password"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    setupPasswordToggle(
+        "togglePassword",
+        "password"
+    );
+
+
+    setupPasswordToggle(
+        "toggleConfirmPassword",
+        "confirmPassword"
+    );
+
+
+    /* ============================================
+       REGISTER FORM
+    ============================================ */
+
+    const registerForm =
+        document.getElementById("registerForm");
+
+    const registerMessage =
+        document.getElementById("registerMessage");
+
+    const registerButton =
+        document.getElementById("registerButton");
+
+
+    function showMessage(message, type) {
+
+        if (!registerMessage) {
+            return;
+        }
+
+        registerMessage.textContent =
+            message;
+
+        registerMessage.className =
+            "message-box " + type;
+
+    }
+
+
+    function setLoading(loading) {
+
+        if (!registerButton) {
+            return;
+        }
+
+        registerButton.disabled =
+            loading;
+
+        if (loading) {
+
+            registerButton.innerHTML =
+                '<span class="spinner-border spinner-border-sm me-2"></span>CREATING ACCOUNT...';
+
+        } else {
+
+            registerButton.innerHTML =
+                "CREATE ACCOUNT";
+
+        }
+
+    }
+
+
+    if (registerForm) {
+
+        registerForm.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                if (registerMessage) {
+
+                    registerMessage.className =
+                        "message-box";
+
+                    registerMessage.textContent =
+                        "";
+
+                }
+
+
+                const fullName =
+                    document
+                        .getElementById("fullName")
+                        .value
+                        .trim();
+
+
+                const email =
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim()
+                        .toLowerCase();
+
+
+                const phone =
+                    document
+                        .getElementById("phone")
+                        .value
+                        .trim();
+
+
+                const password =
+                    document
+                        .getElementById("password")
+                        .value;
+
+
+                const confirmPassword =
+                    document
+                        .getElementById("confirmPassword")
+                        .value;
+
+
+                const terms =
+                    document
+                        .getElementById("terms")
+                        .checked;
+
+
+                /* ====================================
+                   VALIDATION
+                ==================================== */
+
+                if (
+                    !fullName ||
+                    !email ||
+                    !phone ||
+                    !password ||
+                    !confirmPassword
+                ) {
+
+                    showMessage(
+                        "Please fill in all fields.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    !email.includes("@") ||
+                    !email.includes(".")
+                ) {
+
+                    showMessage(
+                        "Please enter a valid email address.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if (password.length < 6) {
+
+                    showMessage(
+                        "Password must be at least 6 characters.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if (password !== confirmPassword) {
+
+                    showMessage(
+                        "Passwords do not match.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if (!terms) {
+
+                    showMessage(
+                        "Please agree to the terms and conditions.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                setLoading(true);
+
+
+                /* ====================================
+                   SEND TO BACKEND
+                ==================================== */
+
+                try {
+
+                    const response =
+                        await fetch(
+                            "http://localhost:5000/api/auth/register",
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify({
+                                        fullName: fullName,
+                                        email: email,
+                                        phone: phone,
+                                        password: password
+                                    })
+                            }
+                        );
+
+
+                    let data;
+
+                    try {
+
+                        data =
+                            await response.json();
+
+                    } catch (jsonError) {
+
+                        data = {};
+
+                    }
+
+
+                    /* =================================
+                       BACKEND ERROR
+                    ================================= */
+
+                    if (
+                        !response.ok ||
+                        !data.success
+                    ) {
+
+                        showMessage(
+                            data.message ||
+                            "Registration failed. Please try again.",
+                            "error"
+                        );
+
+                        setLoading(false);
+
+                        return;
+
+                    }
+
+
+                    /* =================================
+                       SUCCESS
+                    ================================= */
+
+                    showMessage(
+                        "Account created successfully! Redirecting to login...",
+                        "success"
+                    );
+
+
+                    registerForm.reset();
+
+
+                    setTimeout(
+                        function () {
+
+                            window.location.href =
+                                "login.html";
+
+                        },
+                        1800
+                    );
+
+                } catch (error) {
+
+                    console.error(
+                        "Registration error:",
+                        error
+                    );
+
+
+                    showMessage(
+                        "Cannot connect to the server. Make sure your backend is running on port 5000.",
+                        "error"
+                    );
+
+
+                    setLoading(false);
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* ============================================
+       YEAR
+    ============================================ */
+
+    const year =
+        document.getElementById("year");
+
+    if (year) {
+
+        year.textContent =
+            new Date().getFullYear();
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
