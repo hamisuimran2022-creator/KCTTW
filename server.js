@@ -1,3 +1,4 @@
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -13,13 +14,101 @@ MIDDLEWARE
 ========================================================
 */
 
-app.use(cors());
+app.use(
+    cors({
+        origin: "*",
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"]
+    })
+);
 
 app.use(express.json());
 
-app.use(express.urlencoded({
-    extended: true
-}));
+app.use(
+    express.urlencoded({
+        extended: true
+    })
+);
+
+
+/*
+========================================================
+MONGODB CONNECTION
+========================================================
+*/
+
+let mongoConnection = null;
+
+async function connectMongoDB() {
+
+    if (mongoose.connection.readyState === 1) {
+        return;
+    }
+
+    if (!process.env.MONGO_URI) {
+        throw new Error(
+            "MONGO_URI environment variable is missing."
+        );
+    }
+
+    if (!mongoConnection) {
+
+        mongoConnection = mongoose.connect(
+            process.env.MONGO_URI
+        );
+
+    }
+
+    try {
+
+        await mongoConnection;
+
+        console.log("MongoDB connected successfully.");
+
+    } catch (error) {
+
+        mongoConnection = null;
+
+        console.error(
+            "MongoDB connection failed:",
+            error
+        );
+
+        throw error;
+    }
+}
+
+
+/*
+========================================================
+DATABASE MIDDLEWARE
+========================================================
+*/
+
+app.use(async (req, res, next) => {
+
+    try {
+
+        await connectMongoDB();
+
+        next();
+
+    } catch (error) {
+
+        console.error(
+            "DATABASE ERROR:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message: "Database connection failed."
+        });
+
+    }
+
+});
+
 
 /*
 ========================================================
@@ -28,11 +117,14 @@ TEST ROUTE
 */
 
 app.get("/", (req, res) => {
-    res.json({
+
+    res.status(200).json({
         success: true,
         message: "KCTTW backend is running."
     });
+
 });
+
 
 /*
 ========================================================
@@ -40,29 +132,55 @@ AUTH ROUTES
 ========================================================
 */
 
-app.use("/api/auth", authRoutes);
+app.use(
+    "/api/auth",
+    authRoutes
+);
+
 
 /*
 ========================================================
-MONGODB CONNECTION
+404 ROUTE
 ========================================================
 */
 
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => {
-        console.log("MongoDB connected successfully.");
-    })
-    .catch((error) => {
-        console.error(
-            "MongoDB connection failed:",
-            error
-        );
+app.use((req, res) => {
+
+    res.status(404).json({
+        success: false,
+        message: "Route not found."
     });
+
+});
+
 
 /*
 ========================================================
-VERCEL
+ERROR HANDLER
+========================================================
+*/
+
+app.use((error, req, res, next) => {
+
+    console.error(
+        "SERVER ERROR:",
+        error
+    );
+
+    res.status(500).json({
+        success: false,
+        message: "Internal server error."
+    });
+
+});
+
+
+/*
+========================================================
+IMPORTANT
+DO NOT USE app.listen() ON VERCEL
 ========================================================
 */
 
 module.exports = app;
+```
