@@ -1,11 +1,9 @@
-
 const express = require("express");
 const bcrypt = require("bcryptjs");
 
 const User = require("../models/User");
 
 const router = express.Router();
-
 
 /*
 ========================================================
@@ -18,17 +16,18 @@ router.post("/register", async (req, res) => {
 
     try {
 
+        console.log("REGISTER REQUEST RECEIVED");
+
         const {
             fullName,
             email,
             phone,
             password
-        } = req.body;
-
+        } = req.body || {};
 
         /*
         --------------------------------------------
-        CHECK REQUIRED FIELDS
+        VALIDATE DATA
         --------------------------------------------
         */
 
@@ -46,62 +45,43 @@ router.post("/register", async (req, res) => {
 
         }
 
+        const cleanFullName = String(fullName).trim();
+        const cleanEmail = String(email).trim().toLowerCase();
+        const cleanPhone = String(phone).trim();
 
         /*
         --------------------------------------------
-        CLEAN DATA
+        PASSWORD
         --------------------------------------------
         */
 
-        const cleanFullName =
-            fullName.trim();
-
-        const cleanEmail =
-            email.trim().toLowerCase();
-
-        const cleanPhone =
-            phone.trim();
-
-
-        /*
-        --------------------------------------------
-        CHECK PASSWORD
-        --------------------------------------------
-        */
-
-        if (password.length < 6) {
+        if (String(password).length < 6) {
 
             return res.status(400).json({
                 success: false,
-                message:
-                    "Password must be at least 6 characters."
+                message: "Password must be at least 6 characters."
             });
 
         }
 
-
         /*
         --------------------------------------------
-        CHECK EXISTING USER
+        CHECK EXISTING EMAIL
         --------------------------------------------
         */
 
-        const existingUser =
-            await User.findOne({
-                email: cleanEmail
-            });
-
+        const existingUser = await User.findOne({
+            email: cleanEmail
+        });
 
         if (existingUser) {
 
             return res.status(409).json({
                 success: false,
-                message:
-                    "An account with this email already exists."
+                message: "An account with this email already exists."
             });
 
         }
-
 
         /*
         --------------------------------------------
@@ -109,12 +89,10 @@ router.post("/register", async (req, res) => {
         --------------------------------------------
         */
 
-        const hashedPassword =
-            await bcrypt.hash(
-                password,
-                10
-            );
-
+        const hashedPassword = await bcrypt.hash(
+            String(password),
+            10
+        );
 
         /*
         --------------------------------------------
@@ -122,29 +100,28 @@ router.post("/register", async (req, res) => {
         --------------------------------------------
         */
 
-        const user =
-            await User.create({
+        const user = await User.create({
 
-                fullName:
-                    cleanFullName,
+            fullName: cleanFullName,
 
-                email:
-                    cleanEmail,
+            email: cleanEmail,
 
-                phone:
-                    cleanPhone,
+            phone: cleanPhone,
 
-                password:
-                    hashedPassword,
+            password: hashedPassword,
 
-                balance: 0,
+            balance: 0,
 
-                totalInvested: 0,
+            totalInvested: 0,
 
-                totalProfit: 0
+            totalProfit: 0
 
-            });
+        });
 
+        console.log(
+            "USER CREATED:",
+            user._id.toString()
+        );
 
         /*
         --------------------------------------------
@@ -156,35 +133,27 @@ router.post("/register", async (req, res) => {
 
             success: true,
 
-            message:
-                "Account created successfully.",
+            message: "Account created successfully.",
 
             user: {
 
                 id: user._id,
 
-                fullName:
-                    user.fullName,
+                fullName: user.fullName,
 
-                email:
-                    user.email,
+                email: user.email,
 
-                phone:
-                    user.phone,
+                phone: user.phone,
 
-                balance:
-                    user.balance,
+                balance: user.balance,
 
-                totalInvested:
-                    user.totalInvested,
+                totalInvested: user.totalInvested,
 
-                totalProfit:
-                    user.totalProfit
+                totalProfit: user.totalProfit
 
             }
 
         });
-
 
     } catch (error) {
 
@@ -193,20 +162,55 @@ router.post("/register", async (req, res) => {
             error
         );
 
+        /*
+        --------------------------------------------
+        DUPLICATE EMAIL
+        --------------------------------------------
+        */
+
+        if (error.code === 11000) {
+
+            return res.status(409).json({
+                success: false,
+                message: "An account with this email already exists."
+            });
+
+        }
+
+        /*
+        --------------------------------------------
+        VALIDATION ERROR
+        --------------------------------------------
+        */
+
+        if (error.name === "ValidationError") {
+
+            return res.status(400).json({
+                success: false,
+                message: "Please provide valid registration details."
+            });
+
+        }
+
+        /*
+        --------------------------------------------
+        SERVER ERROR
+        --------------------------------------------
+        */
 
         return res.status(500).json({
 
             success: false,
 
-            message:
-                "Server error while creating account."
+            message: "Server error while creating account.",
+
+            error: error.message
 
         });
 
     }
 
 });
-
 
 /*
 ========================================================
@@ -222,132 +226,73 @@ router.post("/login", async (req, res) => {
         const {
             email,
             password
-        } = req.body;
-
-
-        /*
-        --------------------------------------------
-        CHECK REQUIRED FIELDS
-        --------------------------------------------
-        */
+        } = req.body || {};
 
         if (!email || !password) {
 
             return res.status(400).json({
-
                 success: false,
-
-                message:
-                    "Email and password are required."
-
+                message: "Email and password are required."
             });
 
         }
 
-
-        /*
-        --------------------------------------------
-        CLEAN EMAIL
-        --------------------------------------------
-        */
-
         const cleanEmail =
-            email.trim().toLowerCase();
+            String(email).trim().toLowerCase();
 
-
-        /*
-        --------------------------------------------
-        FIND USER
-        --------------------------------------------
-        */
-
-        const user =
-            await User.findOne({
-                email: cleanEmail
-            });
-
+        const user = await User.findOne({
+            email: cleanEmail
+        });
 
         if (!user) {
 
             return res.status(401).json({
-
                 success: false,
-
-                message:
-                    "Invalid email or password."
-
+                message: "Invalid email or password."
             });
 
         }
 
-
-        /*
-        --------------------------------------------
-        CHECK PASSWORD
-        --------------------------------------------
-        */
-
         const passwordMatch =
             await bcrypt.compare(
-                password,
+                String(password),
                 user.password
             );
-
 
         if (!passwordMatch) {
 
             return res.status(401).json({
-
                 success: false,
-
-                message:
-                    "Invalid email or password."
-
+                message: "Invalid email or password."
             });
 
         }
-
-
-        /*
-        --------------------------------------------
-        SUCCESS
-        --------------------------------------------
-        */
 
         return res.status(200).json({
 
             success: true,
 
-            message:
-                "Login successful.",
+            message: "Login successful.",
 
             user: {
 
-                id:
-                    user._id,
+                id: user._id,
 
-                fullName:
-                    user.fullName,
+                fullName: user.fullName,
 
-                email:
-                    user.email,
+                email: user.email,
 
-                phone:
-                    user.phone,
+                phone: user.phone,
 
-                balance:
-                    user.balance,
+                balance: user.balance,
 
-                totalInvested:
-                    user.totalInvested,
+                totalInvested: user.totalInvested,
 
-                totalProfit:
-                    user.totalProfit
+                totalProfit: user.totalProfit
 
             }
 
         });
-
 
     } catch (error) {
 
@@ -356,13 +301,13 @@ router.post("/login", async (req, res) => {
             error
         );
 
-
         return res.status(500).json({
 
             success: false,
 
-            message:
-                "Server error while logging in."
+            message: "Server error while logging in.",
+
+            error: error.message
 
         });
 
@@ -370,6 +315,4 @@ router.post("/login", async (req, res) => {
 
 });
 
-
 module.exports = router;
-```
