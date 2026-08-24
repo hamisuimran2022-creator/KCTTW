@@ -1,3 +1,4 @@
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -15,17 +16,8 @@ MIDDLEWARE
 
 app.use(cors({
     origin: "*",
-    methods: [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE",
-        "OPTIONS"
-    ],
-    allowedHeaders: [
-        "Content-Type",
-        "Authorization"
-    ]
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 app.use(express.json());
@@ -37,84 +29,51 @@ app.use(express.urlencoded({
 
 /*
 ========================================================
-MONGODB CONNECTION
-========================================================
-*/
-
-let mongoConnected = false;
-
-async function connectDatabase() {
-
-    if (mongoConnected) {
-        return;
-    }
-
-    if (!process.env.MONGO_URI) {
-
-        throw new Error(
-            "MONGO_URI environment variable is missing."
-        );
-
-    }
-
-    await mongoose.connect(
-        process.env.MONGO_URI
-    );
-
-    mongoConnected = true;
-
-    console.log(
-        "MongoDB connected successfully."
-    );
-
-}
-
-
-/*
-========================================================
-DATABASE MIDDLEWARE
-========================================================
-*/
-
-app.use(async (req, res, next) => {
-
-    try {
-
-        await connectDatabase();
-
-        next();
-
-    } catch (error) {
-
-        console.error(
-            "MongoDB connection failed:",
-            error
-        );
-
-        return res.status(500).json({
-            success: false,
-            message: "Database connection failed."
-        });
-
-    }
-
-});
-
-
-/*
-========================================================
 TEST ROUTE
 ========================================================
 */
 
 app.get("/", (req, res) => {
 
-    res.json({
+    res.status(200).json({
         success: true,
         message: "KCTTW backend is running."
     });
 
 });
+
+
+/*
+========================================================
+MONGODB CONNECTION
+========================================================
+*/
+
+let mongoPromise = null;
+
+async function connectDatabase() {
+
+    if (mongoose.connection.readyState === 1) {
+        return;
+    }
+
+    if (!process.env.MONGO_URI) {
+        throw new Error(
+            "MONGO_URI environment variable is missing."
+        );
+    }
+
+    if (!mongoPromise) {
+
+        mongoPromise = mongoose.connect(
+            process.env.MONGO_URI
+        );
+
+    }
+
+    await mongoPromise;
+
+}
 
 
 /*
@@ -125,13 +84,37 @@ AUTH ROUTES
 
 app.use(
     "/api/auth",
+    async (req, res, next) => {
+
+        try {
+
+            await connectDatabase();
+
+            next();
+
+        } catch (error) {
+
+            console.error(
+                "DATABASE ERROR:",
+                error
+            );
+
+            return res.status(500).json({
+                success: false,
+                message: "Database connection failed.",
+                error: error.message
+            });
+
+        }
+
+    },
     authRoutes
 );
 
 
 /*
 ========================================================
-VERCEL EXPORT
+VERCEL
 ========================================================
 */
 
