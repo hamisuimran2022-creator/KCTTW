@@ -13,7 +13,8 @@ const userSchema = new mongoose.Schema(
             required: true,
             unique: true,
             lowercase: true,
-            trim: true
+            trim: true,
+            index: true
         },
 
         phone: {
@@ -49,4 +50,6 @@ const userSchema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports =
+    mongoose.models.User ||
+    mongoose.model("User", userSchema);
