@@ -6,11 +6,9 @@ const authRoutes = require("./routes/auth");
 
 const app = express();
 
-/*
-========================================================
-MIDDLEWARE
-========================================================
-*/
+/* ================================
+   MIDDLEWARE
+================================ */
 
 app.use(
     cors({
@@ -23,49 +21,42 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-/*
-========================================================
-MONGODB CONNECTION
-========================================================
-*/
+/* ================================
+   MONGODB CONNECTION
+================================ */
 
-let isConnecting = false;
+let connectionPromise = null;
 
 async function connectMongoDB() {
 
-    // Already connected
     if (mongoose.connection.readyState === 1) {
         return;
     }
 
-    // Connection is already being established
-    if (isConnecting) {
-        while (isConnecting) {
-            await new Promise(resolve => setTimeout(resolve, 100));
-        }
-
-        if (mongoose.connection.readyState === 1) {
-            return;
-        }
-    }
-
-    const mongoURI = process.env.MONGO_URI;
-
-    if (!mongoURI) {
+    if (!process.env.MONGO_URI) {
         throw new Error("MONGO_URI is not configured in Vercel.");
     }
 
-    isConnecting = true;
+    if (!connectionPromise) {
+
+        connectionPromise = mongoose.connect(
+            process.env.MONGO_URI,
+            {
+                serverSelectionTimeoutMS: 10000
+            }
+        );
+
+    }
 
     try {
 
-        await mongoose.connect(mongoURI, {
-            serverSelectionTimeoutMS: 10000
-        });
+        await connectionPromise;
 
-        console.log("MongoDB connected successfully.");
+        console.log("MongoDB connected.");
 
     } catch (error) {
+
+        connectionPromise = null;
 
         console.error(
             "MongoDB connection error:",
@@ -73,53 +64,12 @@ async function connectMongoDB() {
         );
 
         throw error;
-
-    } finally {
-
-        isConnecting = false;
-
     }
 }
 
-/*
-========================================================
-DATABASE MIDDLEWARE
-========================================================
-*/
-
-app.use(async (req, res, next) => {
-
-    try {
-
-        await connectMongoDB();
-
-        next();
-
-    } catch (error) {
-
-        console.error(
-            "DATABASE CONNECTION ERROR:",
-            error
-        );
-
-        return res.status(500).json({
-            success: false,
-            message: "Database connection failed.",
-            error:
-                process.env.NODE_ENV === "production"
-                    ? undefined
-                    : error.message
-        });
-
-    }
-
-});
-
-/*
-========================================================
-TEST ROUTE
-========================================================
-*/
+/* ================================
+   HEALTH CHECK
+================================ */
 
 app.get("/", (req, res) => {
 
@@ -130,19 +80,67 @@ app.get("/", (req, res) => {
 
 });
 
-/*
-========================================================
-AUTH ROUTES
-========================================================
-*/
+/* ================================
+   DATABASE TEST
+================================ */
 
-app.use("/api/auth", authRoutes);
+app.get("/api/test-db", async (req, res) => {
 
-/*
-========================================================
-404
-========================================================
-*/
+    try {
+
+        await connectMongoDB();
+
+        res.status(200).json({
+            success: true,
+            message: "MongoDB connection is working."
+        });
+
+    } catch (error) {
+
+        console.error("DATABASE TEST ERROR:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "MongoDB connection failed.",
+            error: error.message
+        });
+
+    }
+
+});
+
+/* ================================
+   AUTH ROUTES
+================================ */
+
+app.use("/api/auth", async (req, res, next) => {
+
+    try {
+
+        await connectMongoDB();
+
+        next();
+
+    } catch (error) {
+
+        console.error(
+            "AUTH DATABASE ERROR:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message: "Database connection failed.",
+            error: error.message
+        });
+
+    }
+
+}, authRoutes);
+
+/* ================================
+   404
+================================ */
 
 app.use((req, res) => {
 
@@ -153,11 +151,9 @@ app.use((req, res) => {
 
 });
 
-/*
-========================================================
-ERROR HANDLER
-========================================================
-*/
+/* ================================
+   ERROR HANDLER
+================================ */
 
 app.use((error, req, res, next) => {
 
@@ -168,15 +164,14 @@ app.use((error, req, res, next) => {
 
     res.status(500).json({
         success: false,
-        message: "Internal server error."
+        message: "Internal server error.",
+        error: error.message
     });
 
 });
 
-/*
-========================================================
-VERCEL EXPORT
-========================================================
-*/
+/* ================================
+   VERCEL EXPORT
+================================ */
 
 module.exports = app;
