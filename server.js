@@ -1,12 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-
 require("dotenv").config();
 
 const authRoutes = require("./routes/auth");
 
 const app = express();
+
+/* =========================
+   CORS
+========================= */
 
 app.use(
     cors({
@@ -16,61 +19,79 @@ app.use(
     })
 );
 
+/* =========================
+   BODY PARSER
+========================= */
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+/* =========================
+   MONGODB CONNECTION
+========================= */
 
-// ==========================================
-// TEST ROUTE
-// ==========================================
+let mongoPromise = null;
 
-app.get("/", (req, res) => {
-    res.status(200).json({
-        success: true,
-        message: "KCTTW backend is running."
-    });
-});
+async function connectMongoDB() {
 
-
-// ==========================================
-// MONGODB CONNECTION
-// ==========================================
-
-let isConnected = false;
-
-async function connectDatabase() {
-
-    if (isConnected) {
+    if (mongoose.connection.readyState === 1) {
         return;
     }
 
     if (!process.env.MONGO_URI) {
-        throw new Error("MONGO_URI is not configured.");
+        throw new Error("MONGO_URI is missing.");
     }
 
-    await mongoose.connect(process.env.MONGO_URI);
-
-    isConnected = true;
-
-    console.log("MongoDB connected successfully.");
-}
-
-
-// ==========================================
-// AUTH ROUTES
-// ==========================================
-
-app.use("/api/auth", async (req, res, next) => {
+    if (!mongoPromise) {
+        mongoPromise = mongoose.connect(process.env.MONGO_URI, {
+            serverSelectionTimeoutMS: 10000
+        });
+    }
 
     try {
 
-        await connectDatabase();
+        await mongoPromise;
+
+        console.log("MongoDB connected.");
+
+    } catch (error) {
+
+        mongoPromise = null;
+
+        console.error("MongoDB connection error:", error);
+
+        throw error;
+    }
+}
+
+/* =========================
+   HEALTH CHECK
+========================= */
+
+app.get("/", (req, res) => {
+
+    res.status(200).json({
+        success: true,
+        message: "KCTTW backend is running."
+    });
+
+});
+
+/* =========================
+   DATABASE MIDDLEWARE
+========================= */
+
+app.use(async (req, res, next) => {
+
+    try {
+
+        await connectMongoDB();
 
         next();
 
     } catch (error) {
 
-        console.error("DATABASE CONNECTION ERROR:", error);
+        console.error("DATABASE ERROR:", error);
 
         return res.status(500).json({
             success: false,
@@ -79,26 +100,45 @@ app.use("/api/auth", async (req, res, next) => {
 
     }
 
-}, authRoutes);
+});
 
+/* =========================
+   AUTH ROUTES
+========================= */
 
-// ==========================================
-// 404
-// ==========================================
+app.use("/api/auth", authRoutes);
+
+/* =========================
+   TEST REGISTER ROUTE
+========================= */
+
+app.get("/api/auth/test", (req, res) => {
+
+    res.status(200).json({
+        success: true,
+        message: "Auth route is working."
+    });
+
+});
+
+/* =========================
+   404
+========================= */
 
 app.use((req, res) => {
 
     res.status(404).json({
         success: false,
-        message: "Route not found."
+        message: "Route not found.",
+        path: req.originalUrl,
+        method: req.method
     });
 
 });
 
-
-// ==========================================
-// ERROR HANDLER
-// ==========================================
+/* =========================
+   ERROR HANDLER
+========================= */
 
 app.use((error, req, res, next) => {
 
@@ -111,9 +151,8 @@ app.use((error, req, res, next) => {
 
 });
 
-
-// ==========================================
-// VERCEL
-// ==========================================
+/* =========================
+   VERCEL
+========================= */
 
 module.exports = app;
