@@ -1,18 +1,12 @@
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+
 require("dotenv").config();
 
 const authRoutes = require("./routes/auth");
 
 const app = express();
-
-/*
-========================================================
-MIDDLEWARE
-========================================================
-*/
 
 app.use(
     cors({
@@ -23,82 +17,60 @@ app.use(
 );
 
 app.use(express.json());
-
-app.use(
-    express.urlencoded({
-        extended: true
-    })
-);
+app.use(express.urlencoded({ extended: true }));
 
 
-/*
-========================================================
-MONGODB CONNECTION
-========================================================
-*/
+// ==========================================
+// TEST ROUTE
+// ==========================================
 
-let mongoConnection = null;
+app.get("/", (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "KCTTW backend is running."
+    });
+});
 
-async function connectMongoDB() {
 
-    if (mongoose.connection.readyState === 1) {
+// ==========================================
+// MONGODB CONNECTION
+// ==========================================
+
+let isConnected = false;
+
+async function connectDatabase() {
+
+    if (isConnected) {
         return;
     }
 
     if (!process.env.MONGO_URI) {
-        throw new Error(
-            "MONGO_URI environment variable is missing."
-        );
+        throw new Error("MONGO_URI is not configured.");
     }
 
-    if (!mongoConnection) {
+    await mongoose.connect(process.env.MONGO_URI);
 
-        mongoConnection = mongoose.connect(
-            process.env.MONGO_URI
-        );
+    isConnected = true;
 
-    }
-
-    try {
-
-        await mongoConnection;
-
-        console.log("MongoDB connected successfully.");
-
-    } catch (error) {
-
-        mongoConnection = null;
-
-        console.error(
-            "MongoDB connection failed:",
-            error
-        );
-
-        throw error;
-    }
+    console.log("MongoDB connected successfully.");
 }
 
 
-/*
-========================================================
-DATABASE MIDDLEWARE
-========================================================
-*/
+// ==========================================
+// AUTH ROUTES
+// ==========================================
 
-app.use(async (req, res, next) => {
+app.use("/api/auth", async (req, res, next) => {
 
     try {
 
-        await connectMongoDB();
+        await connectDatabase();
 
         next();
 
     } catch (error) {
 
-        console.error(
-            "DATABASE ERROR:",
-            error
-        );
+        console.error("DATABASE CONNECTION ERROR:", error);
 
         return res.status(500).json({
             success: false,
@@ -107,42 +79,12 @@ app.use(async (req, res, next) => {
 
     }
 
-});
+}, authRoutes);
 
 
-/*
-========================================================
-TEST ROUTE
-========================================================
-*/
-
-app.get("/", (req, res) => {
-
-    res.status(200).json({
-        success: true,
-        message: "KCTTW backend is running."
-    });
-
-});
-
-
-/*
-========================================================
-AUTH ROUTES
-========================================================
-*/
-
-app.use(
-    "/api/auth",
-    authRoutes
-);
-
-
-/*
-========================================================
-404 ROUTE
-========================================================
-*/
+// ==========================================
+// 404
+// ==========================================
 
 app.use((req, res) => {
 
@@ -154,18 +96,13 @@ app.use((req, res) => {
 });
 
 
-/*
-========================================================
-ERROR HANDLER
-========================================================
-*/
+// ==========================================
+// ERROR HANDLER
+// ==========================================
 
 app.use((error, req, res, next) => {
 
-    console.error(
-        "SERVER ERROR:",
-        error
-    );
+    console.error("SERVER ERROR:", error);
 
     res.status(500).json({
         success: false,
@@ -175,12 +112,8 @@ app.use((error, req, res, next) => {
 });
 
 
-/*
-========================================================
-IMPORTANT
-DO NOT USE app.listen() ON VERCEL
-========================================================
-*/
+// ==========================================
+// VERCEL
+// ==========================================
 
 module.exports = app;
-```
