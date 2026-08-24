@@ -3,52 +3,36 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="description"
-        content="Create your KCTTW account — Kamba Collection To The World."
-    >
+    <meta name="description"
+        content="Create your KCTTW account — Kamba Collection To The World.">
 
     <title>Register | KCTTW — Kamba Collection</title>
-
 
     <!-- Bootstrap -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
+        rel="stylesheet">
 
     <!-- Bootstrap Icons -->
     <link
         rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    >
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <!-- Google Font -->
+    <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet"
-    >
+        rel="stylesheet">
 
     <!-- AOS -->
     <link
         href="https://unpkg.com/aos@2.3.1/dist/aos.css"
-        rel="stylesheet"
-    >
+        rel="stylesheet">
 
-    <!-- Your main CSS -->
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
-
+    <!-- Your CSS -->
+    <link rel="stylesheet" href="css/style.css">
 
     <style>
 
@@ -56,528 +40,255 @@
             font-family: "Montserrat", sans-serif;
         }
 
-
-        /* =========================================
-           REGISTER SECTION
-        ========================================= */
-
         .register-section {
-
             min-height: 100vh;
-
             padding: 130px 15px 70px;
-
             display: flex;
-
             align-items: center;
-
             position: relative;
-
             overflow: hidden;
-
         }
-
 
         .register-section::before {
-
             content: "";
-
             position: absolute;
-
             width: 500px;
-
             height: 500px;
-
             left: -250px;
-
             top: 15%;
-
             border-radius: 50%;
-
             background: rgba(255,255,255,.04);
-
             filter: blur(30px);
-
             pointer-events: none;
-
         }
-
 
         .register-section::after {
-
             content: "";
-
             position: absolute;
-
             width: 450px;
-
             height: 450px;
-
             right: -220px;
-
             bottom: 5%;
-
             border-radius: 50%;
-
             background: rgba(255,255,255,.035);
-
             filter: blur(30px);
-
             pointer-events: none;
-
         }
-
 
         .register-container {
-
             position: relative;
-
             z-index: 2;
-
             width: 100%;
-
             max-width: 520px;
-
             margin: auto;
-
         }
-
-
-        /* =========================================
-           REGISTER CARD
-        ========================================= */
 
         .register-card {
-
             padding: 45px;
-
             border-radius: 30px;
-
             background: rgba(255,255,255,.045);
-
             border: 1px solid rgba(255,255,255,.1);
-
             backdrop-filter: blur(18px);
-
-            -webkit-backdrop-filter: blur(18px);
-
-            box-shadow:
-                0 30px 80px rgba(0,0,0,.35);
-
+            box-shadow: 0 30px 80px rgba(0,0,0,.35);
         }
-
-
-        /* =========================================
-           LOGO
-        ========================================= */
 
         .register-logo {
-
             text-align: center;
-
             margin-bottom: 30px;
-
         }
-
 
         .register-logo h1 {
-
             font-size: 42px;
-
             font-weight: 900;
-
             margin: 0;
-
             letter-spacing: 2px;
-
         }
-
 
         .register-logo p {
-
             margin: 8px 0 0;
-
             font-size: 11px;
-
             letter-spacing: 3px;
-
             opacity: .5;
-
             font-weight: 700;
-
         }
-
-
-        /* =========================================
-           TITLE
-        ========================================= */
 
         .register-title {
-
             text-align: center;
-
             margin-bottom: 30px;
-
         }
-
 
         .register-title h2 {
-
             font-size: 28px;
-
             font-weight: 800;
-
             margin-bottom: 8px;
-
         }
-
 
         .register-title p {
-
             font-size: 13px;
-
             opacity: .55;
-
             margin: 0;
-
         }
-
-
-        /* =========================================
-           FORM
-        ========================================= */
 
         .form-group {
-
             margin-bottom: 20px;
-
         }
-
 
         .form-label {
-
             font-size: 11px;
-
             font-weight: 800;
-
             letter-spacing: 1px;
-
             margin-bottom: 8px;
-
         }
-
 
         .input-wrapper {
-
             position: relative;
-
         }
-
 
         .input-wrapper > i {
-
             position: absolute;
-
             left: 16px;
-
             top: 50%;
-
             transform: translateY(-50%);
-
             opacity: .5;
-
             z-index: 2;
-
         }
-
 
         .register-input {
-
             width: 100%;
-
             height: 52px;
-
             border-radius: 14px;
-
-            border:
-                1px solid rgba(255,255,255,.12);
-
-            background:
-                rgba(255,255,255,.055);
-
+            border: 1px solid rgba(255,255,255,.12);
+            background: rgba(255,255,255,.055);
             color: inherit;
-
             padding: 0 45px;
-
             outline: none;
-
             transition: .3s ease;
-
         }
-
 
         .register-input::placeholder {
-
             color: currentColor;
-
             opacity: .35;
-
         }
-
 
         .register-input:focus {
-
-            border-color:
-                rgba(255,255,255,.45);
-
-            background:
-                rgba(255,255,255,.08);
-
-            box-shadow:
-                0 0 0 3px rgba(255,255,255,.04);
-
+            border-color: rgba(255,255,255,.45);
+            background: rgba(255,255,255,.08);
+            box-shadow: 0 0 0 3px rgba(255,255,255,.04);
         }
-
-
-        /* =========================================
-           PASSWORD TOGGLE
-        ========================================= */
 
         .password-toggle {
-
             position: absolute;
-
             right: 15px;
-
             top: 50%;
-
             transform: translateY(-50%);
-
             border: none;
-
             background: transparent;
-
             color: inherit;
-
             opacity: .5;
-
             cursor: pointer;
-
         }
-
 
         .password-toggle:hover {
-
             opacity: 1;
-
         }
-
-
-        /* =========================================
-           REGISTER BUTTON
-        ========================================= */
 
         .register-button {
-
             width: 100%;
-
             height: 54px;
-
             border: none;
-
             border-radius: 50px;
-
             background: #fff;
-
             color: #000;
-
             font-size: 11px;
-
             font-weight: 900;
-
             letter-spacing: 1px;
-
             transition: .35s ease;
-
             margin-top: 5px;
-
         }
-
 
         .register-button:hover {
-
             transform: translateY(-3px);
-
-            box-shadow:
-                0 15px 35px rgba(0,0,0,.3);
-
+            box-shadow: 0 15px 35px rgba(0,0,0,.3);
         }
-
 
         .register-button:disabled {
-
             opacity: .6;
-
             cursor: not-allowed;
-
             transform: none;
-
         }
-
-
-        /* =========================================
-           MESSAGE
-        ========================================= */
 
         .message-box {
-
             display: none;
-
             padding: 13px 15px;
-
             border-radius: 12px;
-
             font-size: 12px;
-
             font-weight: 600;
-
             margin-bottom: 20px;
-
             text-align: center;
-
         }
-
 
         .message-box.success {
-
             display: block;
-
-            background:
-                rgba(40,167,69,.15);
-
-            border:
-                1px solid rgba(40,167,69,.35);
-
+            background: rgba(40,167,69,.15);
+            border: 1px solid rgba(40,167,69,.35);
             color: #7dff9b;
-
         }
-
 
         .message-box.error {
-
             display: block;
-
-            background:
-                rgba(220,53,69,.15);
-
-            border:
-                1px solid rgba(220,53,69,.35);
-
+            background: rgba(220,53,69,.15);
+            border: 1px solid rgba(220,53,69,.35);
             color: #ff8f9c;
-
         }
-
-
-        /* =========================================
-           LOGIN TEXT
-        ========================================= */
 
         .login-text {
-
             text-align: center;
-
             margin-top: 25px;
-
             font-size: 12px;
-
             opacity: .6;
-
         }
-
 
         .login-text a {
-
             color: inherit;
-
             font-weight: 800;
-
             text-decoration: none;
-
         }
-
 
         .login-text a:hover {
-
             text-decoration: underline;
-
         }
-
-
-        /* =========================================
-           TERMS
-        ========================================= */
 
         .terms {
-
             display: flex;
-
             align-items: flex-start;
-
             gap: 10px;
-
             margin: 5px 0 20px;
-
             font-size: 10px;
-
             line-height: 1.6;
-
             opacity: .55;
-
         }
-
 
         .terms input {
-
             margin-top: 3px;
-
         }
-
-
-        /* =========================================
-           MOBILE
-        ========================================= */
 
         @media (max-width: 576px) {
 
             .register-section {
-
-                padding:
-                    110px 15px 50px;
-
+                padding: 110px 15px 50px;
             }
-
 
             .register-card {
-
-                padding:
-                    30px 20px;
-
+                padding: 30px 20px;
                 border-radius: 24px;
-
             }
-
 
             .register-logo h1 {
-
                 font-size: 34px;
-
             }
 
-
             .register-title h2 {
-
                 font-size: 24px;
-
             }
 
         }
@@ -590,21 +301,15 @@
 <body>
 
 
-<!-- =========================================
+<!-- =====================================================
      NAVBAR
-========================================= -->
+===================================================== -->
 
-<nav
-    class="navbar navbar-expand-lg navbar-dark fixed-top kcttw-navbar"
->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top kcttw-navbar">
 
     <div class="container">
 
-
-        <a
-            class="navbar-brand"
-            href="index.html"
-        >
+        <a class="navbar-brand" href="index.html">
 
             <span class="brand-kc">
                 KCTTW
@@ -624,80 +329,46 @@
             data-bs-target="#mainNavbar"
             aria-controls="mainNavbar"
             aria-expanded="false"
-            aria-label="Toggle navigation"
-        >
+            aria-label="Toggle navigation">
 
-            <span
-                class="navbar-toggler-icon"
-            ></span>
+            <span class="navbar-toggler-icon"></span>
 
         </button>
 
 
         <div
             class="collapse navbar-collapse"
-            id="mainNavbar"
-        >
+            id="mainNavbar">
 
-            <ul
-                class="navbar-nav ms-auto align-items-lg-center"
-            >
-
+            <ul class="navbar-nav ms-auto align-items-lg-center">
 
                 <li class="nav-item">
-
-                    <a
-                        class="nav-link"
-                        href="index.html"
-                    >
+                    <a class="nav-link" href="index.html">
                         Home
                     </a>
-
                 </li>
 
-
                 <li class="nav-item">
-
-                    <a
-                        class="nav-link"
-                        href="products.html"
-                    >
+                    <a class="nav-link" href="products.html">
                         Products
                     </a>
-
                 </li>
 
-
                 <li class="nav-item">
-
-                    <a
-                        class="nav-link"
-                        href="about.html"
-                    >
+                    <a class="nav-link" href="about.html">
                         About
                     </a>
-
                 </li>
 
-
                 <li class="nav-item">
-
-                    <a
-                        class="nav-link"
-                        href="contact.html"
-                    >
+                    <a class="nav-link" href="contact.html">
                         Contact
                     </a>
-
                 </li>
-
 
                 <li class="nav-item">
 
-                    <a
-                        class="nav-link cart-link"
-                        href="cart.html"
-                    >
+                    <a class="nav-link cart-link" href="cart.html">
 
                         <i class="bi bi-bag"></i>
 
@@ -705,8 +376,7 @@
 
                         <span
                             id="cartCount"
-                            class="cart-count"
-                        >
+                            class="cart-count">
                             0
                         </span>
 
@@ -714,30 +384,25 @@
 
                 </li>
 
-
                 <li class="nav-item ms-lg-2">
 
                     <a
                         class="btn btn-kcttw-login"
-                        href="login.html"
-                    >
+                        href="login.html">
                         Login
                     </a>
 
                 </li>
 
-
                 <li class="nav-item ms-lg-2">
 
                     <a
                         class="btn btn-kcttw-register"
-                        href="register.html"
-                    >
+                        href="register.html">
                         Register
                     </a>
 
                 </li>
-
 
             </ul>
 
@@ -749,19 +414,16 @@
 
 
 
-<!-- =========================================
+<!-- =====================================================
      REGISTER SECTION
-========================================= -->
+===================================================== -->
 
 <section class="register-section">
-
 
     <div
         class="register-container"
         data-aos="fade-up"
-        data-aos-duration="1000"
-    >
-
+        data-aos-duration="1000">
 
         <div class="register-card">
 
@@ -798,16 +460,15 @@
 
             <div
                 id="registerMessage"
-                class="message-box"
-            ></div>
+                class="message-box">
+            </div>
 
 
             <!-- FORM -->
 
             <form
                 id="registerForm"
-                novalidate
-            >
+                novalidate>
 
 
                 <!-- FULL NAME -->
@@ -816,18 +477,15 @@
 
                     <label
                         for="fullName"
-                        class="form-label"
-                    >
-                        FULL NAME
-                    </label>
+                        class="form-label">
 
+                        FULL NAME
+
+                    </label>
 
                     <div class="input-wrapper">
 
-                        <i
-                            class="bi bi-person"
-                        ></i>
-
+                        <i class="bi bi-person"></i>
 
                         <input
                             type="text"
@@ -836,12 +494,12 @@
                             class="register-input"
                             placeholder="Enter your full name"
                             autocomplete="name"
-                            required
-                        >
+                            required>
 
                     </div>
 
                 </div>
+
 
 
                 <!-- EMAIL -->
@@ -850,18 +508,15 @@
 
                     <label
                         for="email"
-                        class="form-label"
-                    >
-                        EMAIL ADDRESS
-                    </label>
+                        class="form-label">
 
+                        EMAIL ADDRESS
+
+                    </label>
 
                     <div class="input-wrapper">
 
-                        <i
-                            class="bi bi-envelope"
-                        ></i>
-
+                        <i class="bi bi-envelope"></i>
 
                         <input
                             type="email"
@@ -870,12 +525,12 @@
                             class="register-input"
                             placeholder="Enter your email"
                             autocomplete="email"
-                            required
-                        >
+                            required>
 
                     </div>
 
                 </div>
+
 
 
                 <!-- PHONE -->
@@ -884,18 +539,15 @@
 
                     <label
                         for="phone"
-                        class="form-label"
-                    >
-                        PHONE NUMBER
-                    </label>
+                        class="form-label">
 
+                        PHONE NUMBER
+
+                    </label>
 
                     <div class="input-wrapper">
 
-                        <i
-                            class="bi bi-telephone"
-                        ></i>
-
+                        <i class="bi bi-telephone"></i>
 
                         <input
                             type="tel"
@@ -904,12 +556,12 @@
                             class="register-input"
                             placeholder="08012345678"
                             autocomplete="tel"
-                            required
-                        >
+                            required>
 
                     </div>
 
                 </div>
+
 
 
                 <!-- PASSWORD -->
@@ -918,18 +570,15 @@
 
                     <label
                         for="password"
-                        class="form-label"
-                    >
-                        PASSWORD
-                    </label>
+                        class="form-label">
 
+                        PASSWORD
+
+                    </label>
 
                     <div class="input-wrapper">
 
-                        <i
-                            class="bi bi-lock"
-                        ></i>
-
+                        <i class="bi bi-lock"></i>
 
                         <input
                             type="password"
@@ -939,20 +588,15 @@
                             placeholder="Create a password"
                             autocomplete="new-password"
                             minlength="6"
-                            required
-                        >
-
+                            required>
 
                         <button
                             type="button"
                             class="password-toggle"
                             id="togglePassword"
-                            aria-label="Show password"
-                        >
+                            aria-label="Show password">
 
-                            <i
-                                class="bi bi-eye"
-                            ></i>
+                            <i class="bi bi-eye"></i>
 
                         </button>
 
@@ -961,24 +605,22 @@
                 </div>
 
 
+
                 <!-- CONFIRM PASSWORD -->
 
                 <div class="form-group">
 
                     <label
                         for="confirmPassword"
-                        class="form-label"
-                    >
-                        CONFIRM PASSWORD
-                    </label>
+                        class="form-label">
 
+                        CONFIRM PASSWORD
+
+                    </label>
 
                     <div class="input-wrapper">
 
-                        <i
-                            class="bi bi-shield-lock"
-                        ></i>
-
+                        <i class="bi bi-shield-lock"></i>
 
                         <input
                             type="password"
@@ -988,26 +630,22 @@
                             placeholder="Confirm your password"
                             autocomplete="new-password"
                             minlength="6"
-                            required
-                        >
-
+                            required>
 
                         <button
                             type="button"
                             class="password-toggle"
                             id="toggleConfirmPassword"
-                            aria-label="Show password"
-                        >
+                            aria-label="Show password">
 
-                            <i
-                                class="bi bi-eye"
-                            ></i>
+                            <i class="bi bi-eye"></i>
 
                         </button>
 
                     </div>
 
                 </div>
+
 
 
                 <!-- TERMS -->
@@ -1017,27 +655,24 @@
                     <input
                         type="checkbox"
                         id="terms"
-                        required
-                    >
-
+                        required>
 
                     <label for="terms">
 
-                        I agree to the KCTTW terms
-                        and conditions.
+                        I agree to the KCTTW terms and conditions.
 
                     </label>
 
                 </div>
 
 
-                <!-- BUTTON -->
+
+                <!-- REGISTER BUTTON -->
 
                 <button
                     type="submit"
                     class="register-button"
-                    id="registerButton"
-                >
+                    id="registerButton">
 
                     CREATE ACCOUNT
 
@@ -1068,21 +703,21 @@
 
 
 
-<!-- =========================================
+<!-- =====================================================
      FOOTER
-========================================= -->
+===================================================== -->
 
 <footer>
 
     <div class="container">
 
-
         <div class="footer-content">
-
 
             <div>
 
-                <h3>KCTTW</h3>
+                <h3>
+                    KCTTW
+                </h3>
 
                 <p>
                     Kamba Collection — To The World.
@@ -1093,16 +728,12 @@
 
             <div class="social-links">
 
-
                 <a
                     href="https://www.instagram.com/kcttw"
                     target="_blank"
-                    rel="noopener"
-                >
+                    rel="noopener">
 
-                    <i
-                        class="bi bi-instagram"
-                    ></i>
+                    <i class="bi bi-instagram"></i>
 
                 </a>
 
@@ -1110,12 +741,9 @@
                 <a
                     href="https://www.tiktok.com/@_kcttw"
                     target="_blank"
-                    rel="noopener"
-                >
+                    rel="noopener">
 
-                    <i
-                        class="bi bi-tiktok"
-                    ></i>
+                    <i class="bi bi-tiktok"></i>
 
                 </a>
 
@@ -1123,15 +751,11 @@
                 <a
                     href="https://wa.me/2349072585516"
                     target="_blank"
-                    rel="noopener"
-                >
+                    rel="noopener">
 
-                    <i
-                        class="bi bi-whatsapp"
-                    ></i>
+                    <i class="bi bi-whatsapp"></i>
 
                 </a>
-
 
             </div>
 
@@ -1140,25 +764,20 @@
 
         <div class="footer-bottom">
 
-
             <span>
 
                 ©
                 <span id="year"></span>
-
-                KCTTW.
-                All Rights Reserved.
+                KCTTW. All Rights Reserved.
 
             </span>
 
 
             <span>
 
-                Kamba Collection —
-                To The World
+                Kamba Collection — To The World
 
             </span>
-
 
         </div>
 
@@ -1168,692 +787,624 @@
 
 
 
-<!-- =========================================
+<!-- =====================================================
      BOOTSTRAP
-========================================= -->
+===================================================== -->
 
 <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-></script>
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
 
 
-<!-- =========================================
+<!-- =====================================================
      AOS
-========================================= -->
+===================================================== -->
 
 <script
-    src="https://unpkg.com/aos@2.3.1/dist/aos.js"
-></script>
+    src="https://unpkg.com/aos@2.3.1/dist/aos.js">
+</script>
 
 
 
-<!-- =========================================
+<!-- =====================================================
      REGISTER JAVASCRIPT
-========================================= -->
+===================================================== -->
 
 <script>
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+document.addEventListener("DOMContentLoaded", function () {
 
 
-        /* =====================================
-           AOS
-        ===================================== */
+    /* =================================================
+       AOS
+    ================================================= */
 
-        if (
-            typeof AOS !== "undefined"
-        ) {
+    if (typeof AOS !== "undefined") {
 
-            AOS.init({
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 80,
+            easing: "ease-out-cubic"
+        });
 
-                duration: 1000,
-
-                once: true,
-
-                offset: 80,
-
-                easing:
-                    "ease-out-cubic"
-
-            });
-
-        }
+    }
 
 
-        /* =====================================
-           CART COUNT
-        ===================================== */
 
-        function updateCartCount() {
+    /* =================================================
+       CART COUNT
+    ================================================= */
 
-            let cart = [];
+    function updateCartCount() {
 
+        let cart = [];
 
-            try {
+        try {
 
-                cart =
-                    JSON.parse(
-                        localStorage.getItem(
-                            "kcttwCart"
-                        )
-                    ) || [];
+            cart =
+                JSON.parse(
+                    localStorage.getItem("kcttwCart")
+                ) || [];
 
-            } catch (error) {
+        } catch (error) {
 
-                cart = [];
-
-            }
-
-
-            const count =
-                cart.reduce(
-                    function (
-                        total,
-                        item
-                    ) {
-
-                        return total +
-                            Number(
-                                item.quantity || 1
-                            );
-
-                    },
-                    0
-                );
-
-
-            const cartCount =
-                document.getElementById(
-                    "cartCount"
-                );
-
-
-            if (cartCount) {
-
-                cartCount.textContent =
-                    count;
-
-            }
+            cart = [];
 
         }
 
 
-        updateCartCount();
+        const count =
+            cart.reduce(
+                function (total, item) {
 
+                    return total +
+                        Number(item.quantity || 1);
 
-        /* =====================================
-           PASSWORD TOGGLE
-        ===================================== */
-
-        function setupPasswordToggle(
-            buttonId,
-            inputId
-        ) {
-
-
-            const button =
-                document.getElementById(
-                    buttonId
-                );
-
-
-            const input =
-                document.getElementById(
-                    inputId
-                );
-
-
-            if (
-                !button ||
-                !input
-            ) {
-
-                return;
-
-            }
-
-
-            button.addEventListener(
-                "click",
-                function () {
-
-
-                    const icon =
-                        button.querySelector(
-                            "i"
-                        );
-
-
-                    if (
-                        input.type ===
-                        "password"
-                    ) {
-
-
-                        input.type =
-                            "text";
-
-
-                        if (icon) {
-
-                            icon.className =
-                                "bi bi-eye-slash";
-
-                        }
-
-
-                        button.setAttribute(
-                            "aria-label",
-                            "Hide password"
-                        );
-
-
-                    } else {
-
-
-                        input.type =
-                            "password";
-
-
-                        if (icon) {
-
-                            icon.className =
-                                "bi bi-eye";
-
-                        }
-
-
-                        button.setAttribute(
-                            "aria-label",
-                            "Show password"
-                        );
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        setupPasswordToggle(
-            "togglePassword",
-            "password"
-        );
-
-
-        setupPasswordToggle(
-            "toggleConfirmPassword",
-            "confirmPassword"
-        );
-
-
-        /* =====================================
-           FORM ELEMENTS
-        ===================================== */
-
-        const registerForm =
-            document.getElementById(
-                "registerForm"
+                },
+                0
             );
 
 
-        const registerMessage =
-            document.getElementById(
-                "registerMessage"
-            );
+        const cartCount =
+            document.getElementById("cartCount");
 
 
-        const registerButton =
-            document.getElementById(
-                "registerButton"
-            );
+        if (cartCount) {
 
-
-        /* =====================================
-           SHOW MESSAGE
-        ===================================== */
-
-        function showMessage(
-            message,
-            type
-        ) {
-
-
-            if (
-                !registerMessage
-            ) {
-
-                return;
-
-            }
-
-
-            registerMessage.textContent =
-                message;
-
-
-            registerMessage.className =
-                "message-box " + type;
-
-        }
-
-
-        /* =====================================
-           LOADING
-        ===================================== */
-
-        function setLoading(
-            loading
-        ) {
-
-
-            if (
-                !registerButton
-            ) {
-
-                return;
-
-            }
-
-
-            registerButton.disabled =
-                loading;
-
-
-            if (loading) {
-
-
-                registerButton.innerHTML =
-                    '<span class="spinner-border spinner-border-sm me-2"></span>CREATING ACCOUNT...';
-
-
-            } else {
-
-
-                registerButton.innerHTML =
-                    "CREATE ACCOUNT";
-
-            }
-
-        }
-
-
-        /* =====================================
-           REGISTER
-        ===================================== */
-
-        if (
-            registerForm
-        ) {
-
-
-            registerForm.addEventListener(
-                "submit",
-                async function (
-                    event
-                ) {
-
-
-                    event.preventDefault();
-
-
-                    /* -------------------------
-                       CLEAR MESSAGE
-                    ------------------------- */
-
-                    if (
-                        registerMessage
-                    ) {
-
-                        registerMessage.className =
-                            "message-box";
-
-                        registerMessage.textContent =
-                            "";
-
-                    }
-
-
-                    /* -------------------------
-                       GET VALUES
-                    ------------------------- */
-
-                    const fullName =
-                        document
-                            .getElementById(
-                                "fullName"
-                            )
-                            .value
-                            .trim();
-
-
-                    const email =
-                        document
-                            .getElementById(
-                                "email"
-                            )
-                            .value
-                            .trim()
-                            .toLowerCase();
-
-
-                    const phone =
-                        document
-                            .getElementById(
-                                "phone"
-                            )
-                            .value
-                            .trim();
-
-
-                    const password =
-                        document
-                            .getElementById(
-                                "password"
-                            )
-                            .value;
-
-
-                    const confirmPassword =
-                        document
-                            .getElementById(
-                                "confirmPassword"
-                            )
-                            .value;
-
-
-                    const terms =
-                        document
-                            .getElementById(
-                                "terms"
-                            )
-                            .checked;
-
-
-                    /* -------------------------
-                       VALIDATION
-                    ------------------------- */
-
-                    if (
-                        !fullName ||
-                        !email ||
-                        !phone ||
-                        !password ||
-                        !confirmPassword
-                    ) {
-
-                        showMessage(
-                            "Please fill in all fields.",
-                            "error"
-                        );
-
-                        return;
-
-                    }
-
-
-                    if (
-                        !email.includes("@") ||
-                        !email.includes(".")
-                    ) {
-
-                        showMessage(
-                            "Please enter a valid email address.",
-                            "error"
-                        );
-
-                        return;
-
-                    }
-
-
-                    if (
-                        password.length < 6
-                    ) {
-
-                        showMessage(
-                            "Password must be at least 6 characters.",
-                            "error"
-                        );
-
-                        return;
-
-                    }
-
-
-                    if (
-                        password !==
-                        confirmPassword
-                    ) {
-
-                        showMessage(
-                            "Passwords do not match.",
-                            "error"
-                        );
-
-                        return;
-
-                    }
-
-
-                    if (!terms) {
-
-                        showMessage(
-                            "Please agree to the terms and conditions.",
-                            "error"
-                        );
-
-                        return;
-
-                    }
-
-
-                    /* -------------------------
-                       LOADING
-                    ------------------------- */
-
-                    setLoading(true);
-
-
-                    /*
-                    =================================================
-                    IMPORTANT:
-                    YOUR DEPLOYED VERCEL BACKEND
-                    =================================================
-                    */
-
-                    const API_URL =
-                        "https://backend-koguna1.vercel.app";
-
-
-                    /* -------------------------
-                       SEND TO BACKEND
-                    ------------------------- */
-
-                    try {
-
-
-                        const response =
-                            await fetch(
-                                `${API_URL}/api/auth/register`,
-                                {
-
-                                    method:
-                                        "POST",
-
-                                    headers: {
-
-                                        "Content-Type":
-                                            "application/json"
-
-                                    },
-
-                                    body:
-                                        JSON.stringify({
-
-                                            fullName:
-                                                fullName,
-
-                                            email:
-                                                email,
-
-                                            phone:
-                                                phone,
-
-                                            password:
-                                                password
-
-                                        })
-
-                                }
-                            );
-
-
-                        /* -------------------------
-                           READ RESPONSE
-                        ------------------------- */
-
-                        let data = {};
-
-
-                        try {
-
-                            data =
-                                await response.json();
-
-                        } catch (
-                            jsonError
-                        ) {
-
-                            data = {};
-
-                        }
-
-
-                        console.log(
-                            "REGISTER STATUS:",
-                            response.status
-                        );
-
-
-                        console.log(
-                            "REGISTER DATA:",
-                            data
-                        );
-
-
-                        /* -------------------------
-                           ERROR
-                        ------------------------- */
-
-                        if (
-                            !response.ok ||
-                            !data.success
-                        ) {
-
-
-                            showMessage(
-
-                                data.message ||
-                                "Registration failed. Please try again.",
-
-                                "error"
-
-                            );
-
-
-                            setLoading(
-                                false
-                            );
-
-
-                            return;
-
-                        }
-
-
-                        /* -------------------------
-                           SUCCESS
-                        ------------------------- */
-
-                        showMessage(
-
-                            "Account created successfully! Redirecting to login...",
-
-                            "success"
-
-                        );
-
-
-                        registerForm.reset();
-
-
-                        setTimeout(
-                            function () {
-
-                                window.location.href =
-                                    "login.html";
-
-                            },
-                            1800
-                        );
-
-
-                    } catch (
-                        error
-                    ) {
-
-
-                        console.error(
-                            "Registration error:",
-                            error
-                        );
-
-
-                        showMessage(
-
-                            "Cannot connect to the KCTTW server. Please try again.",
-
-                            "error"
-
-                        );
-
-
-                        setLoading(
-                            false
-                        );
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        /* =====================================
-           YEAR
-        ===================================== */
-
-        const year =
-            document.getElementById(
-                "year"
-            );
-
-
-        if (year) {
-
-            year.textContent =
-                new Date()
-                    .getFullYear();
+            cartCount.textContent = count;
 
         }
 
     }
-);
+
+
+    updateCartCount();
+
+
+
+    /* =================================================
+       PASSWORD TOGGLE
+    ================================================= */
+
+    function setupPasswordToggle(
+        buttonId,
+        inputId
+    ) {
+
+        const button =
+            document.getElementById(buttonId);
+
+        const input =
+            document.getElementById(inputId);
+
+
+        if (!button || !input) {
+
+            return;
+
+        }
+
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                const icon =
+                    button.querySelector("i");
+
+
+                if (input.type === "password") {
+
+                    input.type = "text";
+
+
+                    if (icon) {
+
+                        icon.className =
+                            "bi bi-eye-slash";
+
+                    }
+
+
+                    button.setAttribute(
+                        "aria-label",
+                        "Hide password"
+                    );
+
+
+                } else {
+
+                    input.type = "password";
+
+
+                    if (icon) {
+
+                        icon.className =
+                            "bi bi-eye";
+
+                    }
+
+
+                    button.setAttribute(
+                        "aria-label",
+                        "Show password"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    setupPasswordToggle(
+        "togglePassword",
+        "password"
+    );
+
+
+    setupPasswordToggle(
+        "toggleConfirmPassword",
+        "confirmPassword"
+    );
+
+
+
+    /* =================================================
+       REGISTER FORM
+    ================================================= */
+
+    const registerForm =
+        document.getElementById(
+            "registerForm"
+        );
+
+
+    const registerMessage =
+        document.getElementById(
+            "registerMessage"
+        );
+
+
+    const registerButton =
+        document.getElementById(
+            "registerButton"
+        );
+
+
+
+    /* =================================================
+       MESSAGE
+    ================================================= */
+
+    function showMessage(
+        message,
+        type
+    ) {
+
+        if (!registerMessage) {
+
+            return;
+
+        }
+
+
+        registerMessage.textContent =
+            message;
+
+
+        registerMessage.className =
+            "message-box " + type;
+
+    }
+
+
+
+    /* =================================================
+       LOADING
+    ================================================= */
+
+    function setLoading(
+        loading
+    ) {
+
+        if (!registerButton) {
+
+            return;
+
+        }
+
+
+        registerButton.disabled =
+            loading;
+
+
+        if (loading) {
+
+            registerButton.innerHTML =
+
+                '<span class="spinner-border spinner-border-sm me-2"></span>' +
+                'CREATING ACCOUNT...';
+
+        } else {
+
+            registerButton.innerHTML =
+                "CREATE ACCOUNT";
+
+        }
+
+    }
+
+
+
+    /* =================================================
+       REGISTER
+    ================================================= */
+
+    if (registerForm) {
+
+        registerForm.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                showMessage(
+                    "",
+                    ""
+                );
+
+
+                const fullName =
+                    document
+                        .getElementById("fullName")
+                        .value
+                        .trim();
+
+
+                const email =
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim()
+                        .toLowerCase();
+
+
+                const phone =
+                    document
+                        .getElementById("phone")
+                        .value
+                        .trim();
+
+
+                const password =
+                    document
+                        .getElementById("password")
+                        .value;
+
+
+                const confirmPassword =
+                    document
+                        .getElementById("confirmPassword")
+                        .value;
+
+
+                const terms =
+                    document
+                        .getElementById("terms")
+                        .checked;
+
+
+
+                /* =====================================
+                   VALIDATION
+                ===================================== */
+
+                if (
+                    !fullName ||
+                    !email ||
+                    !phone ||
+                    !password ||
+                    !confirmPassword
+                ) {
+
+                    showMessage(
+                        "Please fill in all fields.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    !email.includes("@") ||
+                    !email.includes(".")
+                ) {
+
+                    showMessage(
+                        "Please enter a valid email address.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if (password.length < 6) {
+
+                    showMessage(
+                        "Password must be at least 6 characters.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    password !== confirmPassword
+                ) {
+
+                    showMessage(
+                        "Passwords do not match.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if (!terms) {
+
+                    showMessage(
+                        "Please agree to the terms and conditions.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+
+                setLoading(true);
+
+
+
+                /* =====================================
+                   IMPORTANT:
+                   PRODUCTION BACKEND URL
+                ===================================== */
+
+                const API_URL =
+                    "https://backend-koguna1.vercel.app";
+
+
+
+                /* =====================================
+                   SEND REQUEST
+                ===================================== */
+
+                try {
+
+                    const response =
+                        await fetch(
+                            `${API_URL}/api/auth/register`,
+                            {
+
+                                method: "POST",
+
+                                headers: {
+
+                                    "Content-Type":
+                                        "application/json"
+
+                                },
+
+                                body:
+                                    JSON.stringify({
+
+                                        fullName:
+                                            fullName,
+
+                                        email:
+                                            email,
+
+                                        phone:
+                                            phone,
+
+                                        password:
+                                            password
+
+                                    })
+
+                            }
+                        );
+
+
+
+                    /* =================================
+                       READ RESPONSE
+                    ================================= */
+
+                    let data = {};
+
+
+                    try {
+
+                        data =
+                            await response.json();
+
+                    } catch (error) {
+
+                        console.error(
+                            "Response was not JSON:",
+                            error
+                        );
+
+                    }
+
+
+
+                    /* =================================
+                       SERVER ERROR
+                    ================================= */
+
+                    if (!response.ok) {
+
+                        console.error(
+                            "Backend response:",
+                            data
+                        );
+
+
+                        showMessage(
+
+                            data.message ||
+
+                            `Server returned ${response.status}. Please try again.`,
+
+                            "error"
+
+                        );
+
+
+                        setLoading(false);
+
+                        return;
+
+                    }
+
+
+
+                    /* =================================
+                       BACKEND SUCCESS CHECK
+                    ================================= */
+
+                    if (!data.success) {
+
+                        showMessage(
+
+                            data.message ||
+
+                            "Registration failed. Please try again.",
+
+                            "error"
+
+                        );
+
+
+                        setLoading(false);
+
+                        return;
+
+                    }
+
+
+
+                    /* =================================
+                       SUCCESS
+                    ================================= */
+
+                    showMessage(
+
+                        "Account created successfully! Redirecting to login...",
+
+                        "success"
+
+                    );
+
+
+                    registerForm.reset();
+
+
+                    setLoading(false);
+
+
+
+                    setTimeout(
+                        function () {
+
+                            window.location.href =
+                                "login.html";
+
+                        },
+                        1800
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "REGISTRATION FETCH ERROR:",
+                        error
+                    );
+
+
+                    showMessage(
+
+                        "Cannot connect to the KCTTW server. Please try again.",
+
+                        "error"
+
+                    );
+
+
+                    setLoading(false);
+
+                }
+
+            }
+        );
+
+    }
+
+
+
+    /* =================================================
+       YEAR
+    ================================================= */
+
+    const year =
+        document.getElementById("year");
+
+
+    if (year) {
+
+        year.textContent =
+            new Date().getFullYear();
+
+    }
+
+});
 
 </script>
 
