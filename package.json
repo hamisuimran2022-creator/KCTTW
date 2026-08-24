@@ -1,7 +1,6 @@
 {
   "name": "kcttw-backend",
   "version": "1.0.0",
-  "description": "KCTTW Backend API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
