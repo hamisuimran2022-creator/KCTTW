@@ -7,84 +7,111 @@ const authRoutes = require("./routes/auth");
 
 const app = express();
 
-/*
-========================================================
-MIDDLEWARE
-========================================================
-*/
-
-app.use(
-    cors({
-        origin: "*",
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        allowedHeaders: ["Content-Type", "Authorization"]
-    })
-);
+app.use(cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-/*
-========================================================
-MONGODB CONNECTION
-========================================================
-*/
+let connectionPromise = null;
 
-let isConnecting = false;
+async function connectDB() {
 
-async function connectMongoDB() {
-
-    // Already connected
     if (mongoose.connection.readyState === 1) {
         return;
     }
 
-    // Prevent multiple simultaneous connections
-    if (isConnecting) {
-
-        while (isConnecting) {
-            await new Promise(resolve => setTimeout(resolve, 100));
-        }
-
-        if (mongoose.connection.readyState === 1) {
-            return;
-        }
-    }
-
     if (!process.env.MONGO_URI) {
-        throw new Error("MONGO_URI is not defined.");
+        throw new Error("MONGO_URI is missing from Vercel environment variables.");
     }
 
-    isConnecting = true;
+    if (!connectionPromise) {
+
+        connectionPromise = mongoose.connect(
+            process.env.MONGO_URI,
+            {
+                serverSelectionTimeoutMS: 10000,
+                connectTimeoutMS: 10000
+            }
+        );
+    }
 
     try {
 
-        await mongoose.connect(process.env.MONGO_URI, {
-            serverSelectionTimeoutMS: 10000,
-            connectTimeoutMS: 10000
-        });
+        await connectionPromise;
 
-        console.log("MongoDB connected successfully.");
+        console.log("=================================");
+        console.log("MONGODB CONNECTED SUCCESSFULLY");
+        console.log("=================================");
 
     } catch (error) {
 
-        console.error(
-            "MongoDB CONNECTION ERROR:",
-            error.message
-        );
+        connectionPromise = null;
+
+        console.error("=================================");
+        console.error("MONGODB CONNECTION FAILED");
+        console.error("ERROR NAME:", error.name);
+        console.error("ERROR MESSAGE:", error.message);
+        console.error("=================================");
 
         throw error;
-
-    } finally {
-
-        isConnecting = false;
-
     }
 }
 
+
 /*
 ========================================================
-DATABASE MIDDLEWARE
+DATABASE TEST ROUTE
+========================================================
+*/
+
+app.get("/api/test-db", async (req, res) => {
+
+    try {
+
+        await connectDB();
+
+        return res.status(200).json({
+            success: true,
+            message: "MongoDB connection is working.",
+            database: mongoose.connection.name
+        });
+
+    } catch (error) {
+
+        console.error("DB TEST ERROR:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "MongoDB connection failed.",
+            error: error.message
+        });
+    }
+});
+
+
+/*
+========================================================
+HOME
+========================================================
+*/
+
+app.get("/", (req, res) => {
+
+    res.status(200).json({
+        success: true,
+        message: "KCTTW backend is running."
+    });
+
+});
+
+
+/*
+========================================================
+AUTH ROUTES
 ========================================================
 */
 
@@ -92,14 +119,14 @@ app.use(async (req, res, next) => {
 
     try {
 
-        await connectMongoDB();
+        await connectDB();
 
         next();
 
     } catch (error) {
 
         console.error(
-            "DATABASE ERROR:",
+            "DATABASE MIDDLEWARE ERROR:",
             error.message
         );
 
@@ -113,28 +140,8 @@ app.use(async (req, res, next) => {
 
 });
 
-/*
-========================================================
-HOME / TEST
-========================================================
-*/
-
-app.get("/", (req, res) => {
-
-    res.status(200).json({
-        success: true,
-        message: "KCTTW backend is running."
-    });
-
-});
-
-/*
-========================================================
-AUTH ROUTES
-========================================================
-*/
-
 app.use("/api/auth", authRoutes);
+
 
 /*
 ========================================================
@@ -151,6 +158,7 @@ app.use((req, res) => {
 
 });
 
+
 /*
 ========================================================
 ERROR HANDLER
@@ -159,10 +167,7 @@ ERROR HANDLER
 
 app.use((error, req, res, next) => {
 
-    console.error(
-        "SERVER ERROR:",
-        error
-    );
+    console.error("SERVER ERROR:", error);
 
     res.status(500).json({
         success: false,
@@ -172,11 +177,6 @@ app.use((error, req, res, next) => {
 
 });
 
-/*
-========================================================
-VERCEL
-========================================================
-*/
 
 module.exports = app;
 ```
