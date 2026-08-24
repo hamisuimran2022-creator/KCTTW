@@ -13,7 +13,6 @@ POST /api/auth/register
 */
 
 router.post("/register", async (req, res) => {
-
     try {
 
         console.log("=================================");
@@ -29,9 +28,9 @@ router.post("/register", async (req, res) => {
         } = req.body || {};
 
         /*
-        --------------------------------------------
+        ========================================================
         CHECK REQUIRED FIELDS
-        --------------------------------------------
+        ========================================================
         */
 
         if (!fullName || !email || !phone || !password) {
@@ -44,9 +43,9 @@ router.post("/register", async (req, res) => {
         }
 
         /*
-        --------------------------------------------
+        ========================================================
         CLEAN DATA
-        --------------------------------------------
+        ========================================================
         */
 
         const cleanFullName = String(fullName).trim();
@@ -55,9 +54,9 @@ router.post("/register", async (req, res) => {
         const cleanPassword = String(password);
 
         /*
-        --------------------------------------------
-        VALIDATE PASSWORD
-        --------------------------------------------
+        ========================================================
+        PASSWORD VALIDATION
+        ========================================================
         */
 
         if (cleanPassword.length < 6) {
@@ -70,9 +69,9 @@ router.post("/register", async (req, res) => {
         }
 
         /*
-        --------------------------------------------
-        CHECK EMAIL
-        --------------------------------------------
+        ========================================================
+        CHECK EXISTING USER
+        ========================================================
         */
 
         console.log("Checking existing user...");
@@ -96,9 +95,9 @@ router.post("/register", async (req, res) => {
         }
 
         /*
-        --------------------------------------------
+        ========================================================
         HASH PASSWORD
-        --------------------------------------------
+        ========================================================
         */
 
         console.log("Hashing password...");
@@ -111,9 +110,9 @@ router.post("/register", async (req, res) => {
         console.log("Password hashed successfully.");
 
         /*
-        --------------------------------------------
+        ========================================================
         CREATE USER
-        --------------------------------------------
+        ========================================================
         */
 
         console.log("Creating user in MongoDB...");
@@ -142,9 +141,9 @@ router.post("/register", async (req, res) => {
         );
 
         /*
-        --------------------------------------------
-        SUCCESS
-        --------------------------------------------
+        ========================================================
+        SUCCESS RESPONSE
+        ========================================================
         */
 
         return res.status(201).json({
@@ -177,22 +176,22 @@ router.post("/register", async (req, res) => {
 
         /*
         ========================================================
-        IMPORTANT DEBUG INFORMATION
+        SHOW THE REAL ERROR
         ========================================================
         */
 
         console.error("=================================");
         console.error("REGISTER ERROR");
-        console.error("NAME:", error.name);
-        console.error("MESSAGE:", error.message);
-        console.error("CODE:", error.code);
-        console.error("STACK:", error.stack);
+        console.error("ERROR NAME:", error.name);
+        console.error("ERROR MESSAGE:", error.message);
+        console.error("ERROR CODE:", error.code);
+        console.error("ERROR STACK:", error.stack);
         console.error("=================================");
 
         /*
-        --------------------------------------------
+        ========================================================
         DUPLICATE EMAIL
-        --------------------------------------------
+        ========================================================
         */
 
         if (error.code === 11000) {
@@ -202,16 +201,19 @@ router.post("/register", async (req, res) => {
                 success: false,
 
                 message:
-                    "An account with this email already exists."
+                    "An account with this email already exists.",
+
+                error:
+                    error.message
 
             });
 
         }
 
         /*
-        --------------------------------------------
+        ========================================================
         MONGOOSE VALIDATION ERROR
-        --------------------------------------------
+        ========================================================
         */
 
         if (error.name === "ValidationError") {
@@ -231,9 +233,9 @@ router.post("/register", async (req, res) => {
         }
 
         /*
-        --------------------------------------------
-        TEMPORARY DEBUG RESPONSE
-        --------------------------------------------
+        ========================================================
+        OTHER SERVER ERROR
+        ========================================================
         */
 
         return res.status(500).json({
@@ -244,10 +246,10 @@ router.post("/register", async (req, res) => {
                 "Server error while creating account.",
 
             error:
-                error.message,
+                error.message || "Unknown server error.",
 
             errorName:
-                error.name,
+                error.name || "UnknownError",
 
             errorCode:
                 error.code || null
@@ -255,7 +257,6 @@ router.post("/register", async (req, res) => {
         });
 
     }
-
 });
 
 
@@ -275,6 +276,12 @@ router.post("/login", async (req, res) => {
             password
         } = req.body || {};
 
+        /*
+        ========================================================
+        REQUIRED FIELDS
+        ========================================================
+        */
+
         if (!email || !password) {
 
             return res.status(400).json({
@@ -288,13 +295,24 @@ router.post("/login", async (req, res) => {
 
         }
 
+        /*
+        ========================================================
+        CLEAN EMAIL
+        ========================================================
+        */
+
         const cleanEmail =
             String(email).trim().toLowerCase();
 
-        const user =
-            await User.findOne({
-                email: cleanEmail
-            });
+        /*
+        ========================================================
+        FIND USER
+        ========================================================
+        */
+
+        const user = await User.findOne({
+            email: cleanEmail
+        });
 
         if (!user) {
 
@@ -308,6 +326,12 @@ router.post("/login", async (req, res) => {
             });
 
         }
+
+        /*
+        ========================================================
+        CHECK PASSWORD
+        ========================================================
+        */
 
         const passwordMatch =
             await bcrypt.compare(
@@ -328,6 +352,12 @@ router.post("/login", async (req, res) => {
 
         }
 
+        /*
+        ========================================================
+        LOGIN SUCCESS
+        ========================================================
+        */
+
         return res.status(200).json({
 
             success: true,
@@ -337,19 +367,26 @@ router.post("/login", async (req, res) => {
 
             user: {
 
-                id: user._id,
+                id:
+                    user._id,
 
-                fullName: user.fullName,
+                fullName:
+                    user.fullName,
 
-                email: user.email,
+                email:
+                    user.email,
 
-                phone: user.phone,
+                phone:
+                    user.phone,
 
-                balance: user.balance,
+                balance:
+                    user.balance,
 
-                totalInvested: user.totalInvested,
+                totalInvested:
+                    user.totalInvested,
 
-                totalProfit: user.totalProfit
+                totalProfit:
+                    user.totalProfit
 
             }
 
@@ -357,10 +394,13 @@ router.post("/login", async (req, res) => {
 
     } catch (error) {
 
-        console.error(
-            "LOGIN ERROR:",
-            error
-        );
+        console.error("=================================");
+        console.error("LOGIN ERROR");
+        console.error("ERROR NAME:", error.name);
+        console.error("ERROR MESSAGE:", error.message);
+        console.error("ERROR CODE:", error.code);
+        console.error("ERROR STACK:", error.stack);
+        console.error("=================================");
 
         return res.status(500).json({
 
@@ -370,14 +410,25 @@ router.post("/login", async (req, res) => {
                 "Server error while logging in.",
 
             error:
-                error.message
+                error.message || "Unknown server error.",
+
+            errorName:
+                error.name || "UnknownError",
+
+            errorCode:
+                error.code || null
 
         });
 
     }
-
 });
 
+
+/*
+========================================================
+EXPORT
+========================================================
+*/
 
 module.exports = router;
 ```
