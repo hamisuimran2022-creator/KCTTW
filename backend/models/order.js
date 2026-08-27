@@ -6,136 +6,137 @@ const orderItemSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-
         name: {
             type: String,
             required: true,
             trim: true
         },
-
         price: {
             type: Number,
             required: true,
-            min: 0
+            min: [0, "Price cannot be negative"]
         },
-
         quantity: {
             type: Number,
             required: true,
-            min: 1
+            min: [1, "Quantity must be at least 1"],
+            default: 1
         },
-
+        color: {
+            type: String,
+            default: "Default",
+            trim: true
+        },
+        size: {
+            type: String,
+            default: "Standard",
+            trim: true
+        },
         image: {
             type: String,
             default: ""
         },
-
-        size: {
-            type: String,
-            default: ""
-        },
-
-        color: {
-            type: String,
-            default: ""
+        itemTotal: {
+            type: Number,
+            required: true
         }
     },
+    { _id: false }
+);
+
+const customerInfoSchema = new mongoose.Schema(
     {
-        _id: false
-    }
+        name: { type: String, required: true, trim: true },
+        email: { type: String, required: true, trim: true, lowercase: true },
+        phone: { type: String, required: true, trim: true }
+    },
+    { _id: false }
 );
 
 const orderSchema = new mongoose.Schema(
     {
-        userId: {
+        orderNumber: {
+            type: String,
+            unique: true,
+            required: true,
+            index: true
+        },
+        user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
+            required: false // Nullable to support guest checkout
+        },
+        customer: {
+            type: customerInfoSchema,
             required: true
         },
-
-        customerName: {
-            type: String,
-            required: true,
-            trim: true
-        },
-
-        customerEmail: {
-            type: String,
-            required: true,
-            lowercase: true,
-            trim: true
-        },
-
-        customerPhone: {
-            type: String,
-            required: true,
-            trim: true
-        },
-
         items: {
             type: [orderItemSchema],
             required: true,
-
             validate: {
-                validator: function (items) {
-                    return items && items.length > 0;
-                },
-
+                validator: (items) => Array.isArray(items) && items.length > 0,
                 message: "Order must contain at least one item"
             }
         },
-
+        subtotal: {
+            type: Number,
+            required: true,
+            min: 0
+        },
+        shippingFee: {
+            type: Number,
+            default: 0,
+            min: 0
+        },
         total: {
             type: Number,
             required: true,
             min: 0
         },
-
         shippingAddress: {
+            street: { type: String, default: "" },
+            city: { type: String, default: "" },
+            state: { type: String, default: "" },
+            country: { type: String, default: "Nigeria" },
+            postalCode: { type: String, default: "" }
+        },
+        paymentMethod: {
+            type: String,
+            enum: ["korapay", "paystack", "bank_transfer", "whatsapp", "card", "cash_on_delivery"],
+            default: "korapay"
+        },
+        paymentStatus: {
+            type: String,
+            enum: ["Pending", "Paid", "Failed", "Refunded"],
+            default: "Pending"
+        },
+        paymentReference: {
             type: String,
             default: ""
         },
-
-        paymentMethod: {
-            type: String,
-            enum: [
-                "paystack",
-                "bank",
-                "ussd"
-            ],
-            default: "paystack"
-        },
-
         status: {
             type: String,
-            enum: [
-                "Pending",
-                "Processing",
-                "Shipped",
-                "Delivered",
-                "Cancelled"
-            ],
+            enum: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"],
             default: "Pending"
         },
-
-        paymentStatus: {
+        notes: {
             type: String,
-            enum: [
-                "Pending",
-                "Paid",
-                "Failed",
-                "Refunded"
-            ],
-            default: "Pending"
+            default: ""
         }
     },
-
     {
         timestamps: true
     }
 );
 
-module.exports = mongoose.model(
-    "Order",
-    orderSchema
-);
+// Generate human-friendly order number before saving
+orderSchema.pre("validate", function (next) {
+    if (!this.orderNumber) {
+        const timestamp = Date.now().toString(36).toUpperCase();
+        const random = Math.floor(1000 + Math.random() * 9000);
+        this.orderNumber = `KCTTW-${timestamp}-${random}`;
+    }
+    next();
+});
+
+module.exports = mongoose.model("Order", orderSchema);

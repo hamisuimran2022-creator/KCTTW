@@ -1,258 +1,100 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
-
+const helmet = require("helmet");
+const morgan = require("morgan");
 require("dotenv").config();
 
-const authRoutes = require("./routes/auth");
+const connectDB = require("./config/db");
+const authRoutes = require("./routes/authRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+const healthRoutes = require("./routes/healthRoutes");
+const contactRoutes = require("./routes/contactRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
+const errorHandler = require("./middleware/error");
+const ApiError = require("./utils/apiError");
 
 const app = express();
 
-/*
-========================================================
-MIDDLEWARE
-========================================================
-*/
+/* =========================================================
+   SECURITY & UTILITY MIDDLEWARE
+========================================================= */
+app.use(
+    helmet({
+        contentSecurityPolicy: false, // Allows flexible asset loading across CDNs
+        crossOriginEmbedderPolicy: false
+    })
+);
 
 app.use(
     cors({
         origin: "*",
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
         allowedHeaders: ["Content-Type", "Authorization"]
     })
 );
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(morgan("dev"));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-
-/*
-========================================================
-MONGODB CONNECTION
-========================================================
-*/
-
-let isConnecting = false;
-
-async function connectDB() {
-
-    // Already connected
-    if (mongoose.connection.readyState === 1) {
-        return;
-    }
-
-    // Connection is already being attempted
-    if (isConnecting) {
-
-        while (isConnecting) {
-            await new Promise(resolve => setTimeout(resolve, 100));
-        }
-
-        if (mongoose.connection.readyState === 1) {
-            return;
-        }
-    }
-
-    const mongoURI = process.env.MONGO_URI;
-
-    if (!mongoURI) {
-        throw new Error(
-            "MONGO_URI is missing from Vercel Environment Variables."
-        );
-    }
-
-    isConnecting = true;
-
+/* =========================================================
+   DATABASE INITIALIZATION MIDDLEWARE
+========================================================= */
+app.use(async (req, res, next) => {
     try {
-
-        console.log("Connecting to MongoDB...");
-
-        await mongoose.connect(mongoURI, {
-            serverSelectionTimeoutMS: 10000,
-            connectTimeoutMS: 10000,
-            socketTimeoutMS: 20000
-        });
-
-        console.log("MongoDB connected successfully.");
-
-    } catch (error) {
-
-        console.error(
-            "MongoDB connection error:",
-            error.message
-        );
-
-        throw error;
-
-    } finally {
-
-        isConnecting = false;
-
-    }
-}
-
-
-/*
-========================================================
-DATABASE TEST
-========================================================
-*/
-
-app.get("/api/test-db", async (req, res) => {
-
-    try {
-
         await connectDB();
-
-        return res.status(200).json({
-
-            success: true,
-
-            message: "MongoDB connection is working.",
-
-            database:
-                mongoose.connection.name,
-
-            host:
-                mongoose.connection.host
-
-        });
-
+        next();
     } catch (error) {
-
-        console.error(
-            "MONGODB TEST ERROR:",
-            error
-        );
-
-        return res.status(500).json({
-
-            success: false,
-
-            message: "MongoDB connection failed.",
-
-            error:
-                error.message,
-
-            name:
-                error.name
-
-        });
-
+        console.error("Database connection failure on request:", error.message);
+        next();
     }
-
 });
 
+/* =========================================================
+   API ROUTES
+========================================================= */
+app.use("/api", healthRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/contact", contactRoutes);
+app.use("/api/payments", paymentRoutes);
 
-/*
-========================================================
-ROOT TEST
-========================================================
-*/
 
+
+// Root greeting
 app.get("/", (req, res) => {
-
     res.status(200).json({
-
         success: true,
-
-        message: "KCTTW backend is running."
-
+        message: "KCTTW — Kamba Collection To The World API is live.",
+        docs: "/api/health"
     });
-
 });
 
-
-/*
-========================================================
-AUTH ROUTES
-========================================================
-*/
-
-app.use(
-    "/api/auth",
-    async (req, res, next) => {
-
-        try {
-
-            await connectDB();
-
-            next();
-
-        } catch (error) {
-
-            console.error(
-                "AUTH DATABASE ERROR:",
-                error.message
-            );
-
-            return res.status(500).json({
-
-                success: false,
-
-                message:
-                    "Database connection failed.",
-
-                error:
-                    error.message
-
-            });
-
-        }
-
-    },
-    authRoutes
-);
-
-
-/*
-========================================================
-404
-========================================================
-*/
-
-app.use((req, res) => {
-
-    res.status(404).json({
-
-        success: false,
-
-        message: "Route not found."
-
-    });
-
+/* =========================================================
+   404 HANDLER
+========================================================= */
+app.use((req, res, next) => {
+    next(ApiError.notFound(`Endpoint not found: ${req.method} ${req.originalUrl}`));
 });
 
+/* =========================================================
+   CENTRALIZED ERROR HANDLER
+========================================================= */
+app.use(errorHandler);
 
-/*
-========================================================
-ERROR HANDLER
-========================================================
-*/
+/* =========================================================
+   SERVER START (LOCAL DEV)
+========================================================= */
+const PORT = process.env.PORT || 5000;
 
-app.use((error, req, res, next) => {
-
-    console.error(
-        "SERVER ERROR:",
-        error
-    );
-
-    res.status(500).json({
-
-        success: false,
-
-        message:
-            "Internal server error."
-
+if (process.env.NODE_ENV !== "test" && !process.env.VERCEL) {
+    app.listen(PORT, async () => {
+        console.log(`\n✨ ========================================`);
+        console.log(`🚀 KCTTW API Server running on port ${PORT}`);
+        console.log(`🌐 Health Check: http://localhost:${PORT}/api/health`);
+        console.log(`✨ ========================================\n`);
+        await connectDB();
     });
-
-});
-
-
-/*
-========================================================
-VERCEL EXPORT
-========================================================
-*/
+}
 
 module.exports = app;
