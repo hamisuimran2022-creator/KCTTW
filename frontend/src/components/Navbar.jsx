@@ -28,12 +28,21 @@ const Navbar = () => {
     setUserDropdownOpen(false);
   }, [location.pathname]);
 
-  const navLinks = [
-    { name: "HOME", path: "/" },
-    { name: "COLLECTION", path: "/products" },
-    { name: "ABOUT", path: "/about" },
-    { name: "CONTACT", path: "/contact" }
-  ];
+  const navLinks = isLoggedIn
+    ? [
+        { name: "COLLECTION", path: "/products" },
+        { name: "MY BAG", path: "/cart" },
+        { name: "VIP DASHBOARD", path: "/dashboard" },
+        ...(user?.role === "admin" ? [{ name: "ADMIN COMMAND", path: "/admin" }] : []),
+        { name: "ABOUT", path: "/about" },
+        { name: "CONTACT", path: "/contact" }
+      ]
+    : [
+        { name: "HOME", path: "/" },
+        { name: "COLLECTION", path: "/products" },
+        { name: "ABOUT", path: "/about" },
+        { name: "CONTACT", path: "/contact" }
+      ];
 
   return (
     <header

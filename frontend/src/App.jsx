@@ -29,10 +29,13 @@ const ScrollToTop = () => {
 };
 
 const App = () => {
+  const location = useLocation();
+  const isAuthPage = location.pathname === "/login" || location.pathname === "/register";
+
   return (
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <ScrollToTop />
-      <Navbar />
+      {!isAuthPage && <Navbar />}
 
       <main style={{ flexGrow: 1 }}>
         <Routes>
@@ -52,7 +55,7 @@ const App = () => {
         </Routes>
       </main>
 
-      <Footer />
+      {!isAuthPage && <Footer />}
       <ToastNotification />
     </div>
   );
