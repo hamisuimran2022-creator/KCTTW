@@ -331,7 +331,7 @@ const CheckoutPage = () => {
                     }}
                   >
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
-                      <span style={{ fontSize: "14px", fontWeight: "800", color: "#ffffff" }}>Korapay</span>
+                      <span style={{ fontSize: "14px", fontWeight: "800", color: "#ffffff" }}>Korapay Checkout</span>
                       <input
                         type="radio"
                         name="paymentMethod"
@@ -341,40 +341,13 @@ const CheckoutPage = () => {
                       />
                     </div>
                     <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>
-                      Cards, Bank Transfer, USSD & Virtual Accounts
+                      Debit / Credit Cards, Instant Bank Transfer, USSD & Virtual Accounts
                     </span>
                     <span className="badge-gold" style={{ marginTop: "10px", width: "fit-content", fontSize: "9px" }}>
-                      RECOMMENDED
+                      INSTANT AUTOMATED CHECKOUT
                     </span>
                   </label>
 
-                  {/* Paystack Gateway */}
-                  <label
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      padding: "18px",
-                      borderRadius: "16px",
-                      background: paymentMethod === "paystack" ? "rgba(212, 175, 55, 0.12)" : "rgba(255, 255, 255, 0.03)",
-                      border: paymentMethod === "paystack" ? "2px solid var(--gold)" : "1px solid rgba(255, 255, 255, 0.1)",
-                      cursor: "pointer",
-                      transition: "all 0.2s"
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
-                      <span style={{ fontSize: "14px", fontWeight: "800", color: "#ffffff" }}>Paystack</span>
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value="paystack"
-                        checked={paymentMethod === "paystack"}
-                        onChange={() => setPaymentMethod("paystack")}
-                      />
-                    </div>
-                    <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>
-                      Debit / Credit Card & Bank Transfers
-                    </span>
-                  </label>
 
                   {/* WhatsApp VIP Concierge */}
                   <label
