@@ -1,18 +1,39 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { PRODUCTS, CATEGORIES } from "../data/products";
+import { PRODUCTS as DEFAULT_PRODUCTS, CATEGORIES } from "../data/products";
+import { productApi } from "../services/api";
 import ProductCard from "../components/ProductCard";
 import QuickViewModal from "../components/QuickViewModal";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search } from "lucide-react";
 
 const ProductsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialCategory = searchParams.get("category") || "all";
 
+  const [productsList, setProductsList] = useState(DEFAULT_PRODUCTS);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("featured");
   const [activeModalProduct, setActiveModalProduct] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchBackendProducts = async () => {
+      setLoading(true);
+      try {
+        const res = await productApi.getAllProducts();
+        if (res.success && res.data?.products && res.data.products.length > 0) {
+          setProductsList(res.data.products);
+        }
+      } catch (err) {
+        console.warn("Backend products fetch warning, using cache:", err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBackendProducts();
+  }, []);
 
   const handleCategoryChange = (catId) => {
     setSelectedCategory(catId);
@@ -25,7 +46,7 @@ const ProductsPage = () => {
   };
 
   const filteredProducts = useMemo(() => {
-    let list = [...PRODUCTS];
+    let list = [...productsList];
 
     // Filter by Category
     if (selectedCategory !== "all") {
@@ -39,7 +60,7 @@ const ProductsPage = () => {
         (p) =>
           p.name.toLowerCase().includes(q) ||
           p.description.toLowerCase().includes(q) ||
-          p.categoryName.toLowerCase().includes(q)
+          p.categoryName?.toLowerCase().includes(q)
       );
     }
 
@@ -49,11 +70,11 @@ const ProductsPage = () => {
     } else if (sortBy === "price-high") {
       list.sort((a, b) => b.price - a.price);
     } else if (sortBy === "rating") {
-      list.sort((a, b) => b.rating - a.rating);
+      list.sort((a, b) => (b.rating || 5) - (a.rating || 5));
     }
 
     return list;
-  }, [selectedCategory, searchQuery, sortBy]);
+  }, [productsList, selectedCategory, searchQuery, sortBy]);
 
   return (
     <div style={{ paddingTop: "120px", paddingBottom: "120px" }}>
@@ -67,7 +88,7 @@ const ProductsPage = () => {
             The KCTTW Collection
           </h1>
           <p style={{ fontSize: "14px", color: "var(--text-muted)", maxWidth: "540px", margin: "14px auto 0" }}>
-            Explore limited luxury apparel, precision-cut fabrics, and iconic drops.
+            Explore limited luxury streetwear drops, precision-cut fabrics, and iconic apparel.
           </p>
         </div>
 
@@ -177,7 +198,7 @@ const ProductsPage = () => {
           >
             {filteredProducts.map((product) => (
               <ProductCard
-                key={product.id}
+                key={product.id || product._id}
                 product={product}
                 onQuickView={(p) => setActiveModalProduct(p)}
               />

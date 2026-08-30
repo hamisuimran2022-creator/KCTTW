@@ -250,6 +250,26 @@ const Navbar = () => {
                     <LayoutDashboard size={16} color="var(--gold)" />
                     My Dashboard
                   </Link>
+                  {user?.role === "admin" && (
+                    <Link
+                      to="/admin"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                        padding: "10px 12px",
+                        fontSize: "12px",
+                        fontWeight: "700",
+                        color: "var(--gold)",
+                        background: "rgba(212, 175, 55, 0.1)",
+                        borderRadius: "8px",
+                        marginBottom: "4px"
+                      }}
+                    >
+                      <LayoutDashboard size={16} color="var(--gold)" />
+                      Admin Command
+                    </Link>
+                  )}
                   <button
                     onClick={() => {
                       logout();

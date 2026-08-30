@@ -49,6 +49,23 @@ export const authApi = {
 };
 
 /* =========================================================
+   PRODUCTS API (DYNAMIC CATALOG WITH CLOUDINARY)
+========================================================= */
+export const productApi = {
+  getAllProducts: (params = {}) => apiClient.get("/products", { params }),
+  getProductById: (id) => apiClient.get(`/products/${id}`),
+  createProduct: (formData) =>
+    apiClient.post("/products", formData, {
+      headers: { "Content-Type": "multipart/form-data" }
+    }),
+  updateProduct: (id, formData) =>
+    apiClient.put(`/products/${id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" }
+    }),
+  deleteProduct: (id) => apiClient.delete(`/products/${id}`)
+};
+
+/* =========================================================
    ORDERS API
 ========================================================= */
 export const orderApi = {
@@ -67,6 +84,17 @@ export const paymentApi = {
     apiClient.get(`/payments/korapay/verify/${reference}`, {
       params: { order_id: orderId }
     })
+};
+
+/* =========================================================
+   ADMIN API
+========================================================= */
+export const adminApi = {
+  getStats: () => apiClient.get("/admin/stats"),
+  getOrders: (params = {}) => apiClient.get("/admin/orders", { params }),
+  updateOrderStatus: (id, data) => apiClient.patch(`/admin/orders/${id}/status`, data),
+  getCustomers: () => apiClient.get("/admin/customers"),
+  toggleUserRole: (id, role) => apiClient.patch(`/admin/users/${id}/role`, { role })
 };
 
 /* =========================================================

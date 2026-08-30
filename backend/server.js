@@ -12,6 +12,8 @@ const orderRoutes = require("./routes/orderRoutes");
 const healthRoutes = require("./routes/healthRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const productRoutes = require("./routes/productRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 const errorHandler = require("./middleware/error");
 const ApiError = require("./utils/apiError");
 
@@ -56,9 +58,12 @@ app.use(async (req, res, next) => {
 ========================================================= */
 app.use("/api", healthRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/admin", adminRoutes);
+
 
 /* =========================================================
    STATIC FRONTEND SERVING (PRODUCTION DIST)

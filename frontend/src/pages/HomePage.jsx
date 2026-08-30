@@ -1,14 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { PRODUCTS } from "../data/products";
+import { PRODUCTS as DEFAULT_PRODUCTS } from "../data/products";
+import { productApi } from "../services/api";
 import ProductCard from "../components/ProductCard";
 import QuickViewModal from "../components/QuickViewModal";
 import { ArrowRight, Sparkles, ShieldCheck, Flame, MessageCircle, Star } from "lucide-react";
 
 const HomePage = () => {
   const [activeModalProduct, setActiveModalProduct] = useState(null);
+  const [featuredProducts, setFeaturedProducts] = useState(
+    DEFAULT_PRODUCTS.filter((p) => p.isFeatured)
+  );
 
-  const featuredProducts = PRODUCTS.filter((p) => p.isFeatured);
+  useEffect(() => {
+    productApi.getAllProducts()
+      .then((res) => {
+        if (res.success && res.data?.products && res.data.products.length > 0) {
+          const featured = res.data.products.filter((p) => p.isFeatured);
+          setFeaturedProducts(featured.length > 0 ? featured : res.data.products.slice(0, 3));
+        }
+      })
+      .catch(() => {
+        // Fallback silently
+      });
+  }, []);
 
   return (
     <div style={{ paddingTop: "86px" }}>
