@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const path = require("path");
+const fs = require("fs");
 require("dotenv").config();
 
 const connectDB = require("./config/db");
@@ -20,7 +22,7 @@ const app = express();
 ========================================================= */
 app.use(
     helmet({
-        contentSecurityPolicy: false, // Allows flexible asset loading across CDNs
+        contentSecurityPolicy: false,
         crossOriginEmbedderPolicy: false
     })
 );
@@ -43,11 +45,10 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(async (req, res, next) => {
     try {
         await connectDB();
-        next();
     } catch (error) {
         console.error("Database connection failure on request:", error.message);
-        next();
     }
+    next();
 });
 
 /* =========================================================
@@ -59,19 +60,35 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/payments", paymentRoutes);
 
+/* =========================================================
+   STATIC FRONTEND SERVING (PRODUCTION DIST)
+========================================================= */
+const distPath = path.join(__dirname, "../dist");
 
+if (fs.existsSync(distPath)) {
+    app.use(express.static(distPath));
 
-// Root greeting
-app.get("/", (req, res) => {
-    res.status(200).json({
-        success: true,
-        message: "KCTTW — Kamba Collection To The World API is live.",
-        docs: "/api/health"
+    // Catch-all route to serve index.html for React Router
+    app.get("*", (req, res, next) => {
+        if (req.path.startsWith("/api")) {
+            return next();
+        }
+        res.sendFile(path.join(distPath, "index.html"));
     });
-});
+} else {
+    // API-only greeting when dist is not built
+    app.get("/", (req, res) => {
+        res.status(200).json({
+            success: true,
+            service: "KCTTW Luxury Fashion API",
+            status: "online",
+            docs: "/api/health"
+        });
+    });
+}
 
 /* =========================================================
-   404 HANDLER
+   API 404 HANDLER
 ========================================================= */
 app.use((req, res, next) => {
     next(ApiError.notFound(`Endpoint not found: ${req.method} ${req.originalUrl}`));
@@ -83,17 +100,22 @@ app.use((req, res, next) => {
 app.use(errorHandler);
 
 /* =========================================================
-   SERVER START (LOCAL DEV)
+   SERVER START (PRODUCTION & LOCAL)
 ========================================================= */
 const PORT = process.env.PORT || 5000;
+const HOST = "0.0.0.0"; // Required for Railway, Docker, Render, Fly.io
 
 if (process.env.NODE_ENV !== "test" && !process.env.VERCEL) {
-    app.listen(PORT, async () => {
+    app.listen(PORT, HOST, async () => {
         console.log(`\n✨ ========================================`);
-        console.log(`🚀 KCTTW API Server running on port ${PORT}`);
+        console.log(`🚀 KCTTW Server listening on http://${HOST}:${PORT}`);
         console.log(`🌐 Health Check: http://localhost:${PORT}/api/health`);
         console.log(`✨ ========================================\n`);
-        await connectDB();
+        
+        // Attempt initial DB connection in background without blocking server startup
+        connectDB().catch((err) => {
+            console.warn("Initial DB connection warning:", err.message);
+        });
     });
 }
 

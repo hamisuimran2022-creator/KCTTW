@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 let isConnected = false;
 let lastAttemptTime = 0;
 let connectionPromise = null;
-const RETRY_INTERVAL_MS = 20000; // 20 seconds between retry attempts on failure
+const RETRY_INTERVAL_MS = 15000; // 15 seconds between retry attempts on failure
 
 /**
  * Connect to MongoDB with robust options, connection reuse, and throttle
@@ -13,7 +13,6 @@ const connectDB = async () => {
         return;
     }
 
-    // Return in-flight connection promise if already connecting
     if (connectionPromise) {
         return connectionPromise;
     }
@@ -25,6 +24,7 @@ const connectDB = async () => {
 
     const mongoURI = process.env.MONGO_URI;
     if (!mongoURI) {
+        console.warn("⚠️ MONGO_URI is not set. Running in limited mode without database persistence.");
         return;
     }
 
@@ -45,9 +45,7 @@ const connectDB = async () => {
     } catch (error) {
         isConnected = false;
         console.error(`❌ MongoDB Connection Error: ${error.message}`);
-        if (process.env.NODE_ENV === "production") {
-            throw error;
-        }
+        // Do not crash server in production so HTTP health checks and static serving remain operational
     } finally {
         connectionPromise = null;
     }
@@ -55,6 +53,7 @@ const connectDB = async () => {
 
 mongoose.connection.on("disconnected", () => {
     isConnected = false;
+    console.warn("⚠️ MongoDB disconnected.");
 });
 
 mongoose.connection.on("error", (err) => {
